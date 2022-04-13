@@ -1,5 +1,3 @@
-# ファイル名：main_sm.py in bringme_sm
-    
 import rclpy
 from rclpy.node import Node
 import smach    
@@ -32,10 +30,10 @@ def main():
     node.execute()
     
 
-# 音声関連のダミーノード
+# 音声関連のダミーステート
 class Voice(smach.State):    
     def __init__(self, node):    
-        smach.State.__init__(self, output_keys=["target_object"], outcomes=["succeeded", "failed"])
+        smach.State.__init__(self, output_keys=["target_object", "target_location"], outcomes=["succeeded", "failed"])
     
         # Nodeを作成しています
         self.node = node
@@ -50,7 +48,7 @@ class Voice(smach.State):
         self.result = None
 
     def execute(self, userdata):        
-        self.logger.info("Start voice recognition")        
+        self.logger.info("音声認識ステートを開始します")
         
         self.req.command = "start"        
         result = self.send_request()        
@@ -79,10 +77,10 @@ class Voice(smach.State):
         return response.answer
 
 
-# 移動関連のダミーノード
+# 移動関連のダミーステート
 class Navigation(smach.State):    
     def __init__(self, node):           
-        smach.State.__init__(self, input_keys=["target_object"], outcomes=["succeeded", "failed"])
+        smach.State.__init__(self, input_keys=["target_location"], outcomes=["succeeded", "failed"])
 
         # Nodeを作成しています
         self.node = node
@@ -97,19 +95,20 @@ class Navigation(smach.State):
         self.result = None
 
     def execute(self, userdata):
+        self.logger.info("ナビゲーションステートを開始します")
 
         self.req.command = userdata.target_location    
         result = self.send_request()
 
         if result:
-            return "succeeded"
+            return 'succeeded'
         else:
-            return "failed"
+            return 'failed'
 
     def send_request(self):    
         self.future = self.cli.call_async(self.req)
 
-        サービスを動作させる処理
+        # サービスを動作させる処理
         while rclpy.ok():
             rclpy.spin_once(self.node)
             if self.future.done():
@@ -122,7 +121,7 @@ class Navigation(smach.State):
             return False
 
 
-# 物体検出関連のダミーノード
+# 物体検出関連のダミーステート
 class Vision(smach.State):    
     def __init__(self, node):    
         smach.State.__init__(self, input_keys=["target_object"], output_keys=["target_object_pos"], outcomes=["succeeded", "failed"])
@@ -140,9 +139,11 @@ class Vision(smach.State):
         self.result = None
 
     def execute(self, userdata):
+        self.logger.info("物体認識ステートを開始します")
 
         self.req.command = userdata.target_object   
         result = self.send_request()
+        userdata.target_object_pos = [0.12, -0.03, 0.4] # 単位は[m]
 
         if result:
             return "succeeded"
@@ -165,7 +166,7 @@ class Vision(smach.State):
             return False
 
 
-# 物体把持関連のダミーノード
+# 物体把持関連のダミーステート
 class Manipulation(smach.State):    
     def __init__(self, node):    
         smach.State.__init__(self, input_keys=["target_object_pos"], outcomes=["exit", "failed"])
@@ -175,7 +176,7 @@ class Manipulation(smach.State):
         self.logger = self.node.get_logger()        
         
         # サービスにおけるクライアントを作成
-        self.cli = self.node.create_client(StringCommand, 'vision/command')
+        self.cli = self.node.create_client(StringCommand, 'manipulation/command')
         while not self.cli.wait_for_service(timeout_sec=1.0):        
             self.logger.info('サービスへの接続待ちです・・・')        
         self.req = StringCommand.Request()    
@@ -183,8 +184,9 @@ class Manipulation(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info("Try to grasp the target object")
+        self.logger.info("物体把持ステートを開始します")
 
+        target_object_pos = userdata.target_object_pos
         self.req.command = "start"    
         result = self.send_request()
 
@@ -196,7 +198,7 @@ class Manipulation(smach.State):
     def send_request(self):    
         self.future = self.cli.call_async(self.req)
 
-        サービスを動作させる処理
+        # サービスを動作させる処理
         while rclpy.ok():
             rclpy.spin_once(self.node)
             if self.future.done():
