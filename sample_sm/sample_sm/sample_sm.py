@@ -5,7 +5,7 @@ from rclpy.node import Node
 import smach
 
 
-# define state Search
+# 探索ステートを定義します．
 class Search(smach.State):
     def __init__(self, _node):
         smach.State.__init__(self, outcomes=['succeeded', 'finished'])
@@ -13,37 +13,38 @@ class Search(smach.State):
         self.logger = _node.get_logger()
 
     def execute(self, userdata):
-        self.logger.info('I am searching.')
+        self.logger.info('探索中です')
         if self.counter < 3:
-            self.logger.info('Got a sweet.')
+            self.logger.info('スイーツを見つけました！')
             self.counter += 1
             return 'succeeded'
         else:
-            self.logger.info('I am full.')
+            self.logger.info('お腹いっぱいです・・・')
             return 'finished'
 
 
-# define state Eat
+# 食事ステートを定義します．
 class Eat(smach.State):
     def __init__(self, _node):
         smach.State.__init__(self, outcomes=['done'])
         self.logger = _node.get_logger()
 
     def execute(self, userdata):
-        self.logger.info('I am eating.')
+        self.logger.info('食べてます！')
         return 'done'
 
 
+# ステートマシーンを実行するノードを定義します．
 class StateMachine(Node):
     def __init__(self):
         super().__init__('state_machine')
 
     def execute(self):
-        # Create a SMACH state machine
+        # SMACHステートマシーンを作成
         sm = smach.StateMachine(outcomes=['end'])
         # Open the container
         with sm:
-            # Add states to the container
+            # コンテナにステートを追加
             smach.StateMachine.add(
                 'SEARCH', Search(self),
                 transitions={'succeeded': 'EAT', 'finished': 'end'})
@@ -51,7 +52,7 @@ class StateMachine(Node):
                 'EAT', Eat(self),
                 transitions={'done': 'SEARCH'})
 
-        # Execute SMACH plan
+        # SMACHプランを実行
         outcome = sm.execute()
         self.get_logger().info(f'outcom: {outcome}')
 
