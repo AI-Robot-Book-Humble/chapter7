@@ -6,6 +6,7 @@ from rclpy.node import Node
 import random
 from time import sleep
 
+
 class ManipulationServer(Node):
 
     def __init__(self):
@@ -15,7 +16,7 @@ class ManipulationServer(Node):
 
     def command_callback(self, request, response):
         sleep(1)
-        
+
         prob = random.random()
         self.get_logger().info(f"目標の物体を把持します")
 

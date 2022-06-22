@@ -1,5 +1,5 @@
 # ファイル名：sample_sm.py
-    
+
 import rclpy
 from rclpy.node import Node
 import smach
@@ -8,7 +8,7 @@ import smach
 # define state Search
 class Search(smach.State):
     def __init__(self, _node):
-        smach.State.__init__(self, outcomes=['succeeded','finished'])
+        smach.State.__init__(self, outcomes=['succeeded', 'finished'])
         self.counter = 0
         self.logger = _node.get_logger()
 
@@ -21,6 +21,7 @@ class Search(smach.State):
         else:
             self.logger.info('I am full.')
             return 'finished'
+
 
 # define state Eat
 class Eat(smach.State):
@@ -54,10 +55,8 @@ class StateMachine(Node):
         outcome = sm.execute()
         self.get_logger().info(f'outcom: {outcome}')
 
+
 def main():
     rclpy.init()
     node = StateMachine()
     node.execute()
-
-if __name__ == '__main__':
-    main()
