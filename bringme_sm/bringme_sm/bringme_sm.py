@@ -5,38 +5,38 @@ import smach
 from airobot_interfaces.srv import StringCommand
 
 
-# Bring meタスクのステートマシーンを実行するノードを定義します．
+# Bring meタスクの状態マシーンを実行するノードを定義します．
 class Bringme_state(Node):
     def __init__(self):
-        super().__init__("bringme_state")
+        super().__init__('bringme_state')
 
     def execute(self):
-        # SMACHステートマシーンを作成
-        sm = smach.StateMachine(outcomes=["succeeded"])
+        # Smach状態マシーンを作成
+        sm = smach.StateMachine(outcomes=['succeeded'])
 
-        # コンテナにステートを追加
+        # コンテナに状態を追加
         with sm:
             smach.StateMachine.add(
-                "VOICE",
+                'VOICE',
                 Voice(self),
-                {"succeeded": "NAVIGATION", "failed": "VOICE"})
+                {'succeeded': 'NAVIGATION', 'failed': 'VOICE'})
 
             smach.StateMachine.add(
-                "NAVIGATION",
+                'NAVIGATION',
                 Navigation(self),
-                {"succeeded": "VISION", "failed": "NAVIGATION"})
+                {'succeeded': 'VISION', 'failed': 'NAVIGATION'})
 
             smach.StateMachine.add(
-                "VISION",
+                'VISION',
                 Vision(self),
-                {"succeeded": "MANIPULATION", "failed": "VISION"})
+                {'succeeded': 'MANIPULATION', 'failed': 'VISION'})
 
             smach.StateMachine.add(
-                "MANIPULATION",
+                'MANIPULATION',
                 Manipulation(self),
-                {"failed": "VISION", "exit": "succeeded"})
+                {'failed': 'VISION', 'exit': 'succeeded'})
 
-        # SMACHプランを実行
+        # Smachプランを実行
         sm.execute()
 
 
@@ -46,13 +46,13 @@ def main():
     node.execute()
 
 
-# 音声関連のダミーステート
+# 音声関連の状態（ダミー）
 class Voice(smach.State):
     def __init__(self, node):
         smach.State.__init__(
             self,
-            output_keys=["target_object", "target_location"],
-            outcomes=["succeeded", "failed"])
+            output_keys=['target_object', 'target_location'],
+            outcomes=['succeeded', 'failed'])
 
         # Nodeを作成しています
         self.node = node
@@ -67,20 +67,20 @@ class Voice(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info("音声認識ステートを開始します")
+        self.logger.info('音声認識状態を開始します')
 
-        self.req.command = "start"
+        self.req.command = 'start'
         self.send_request()
 
-        target_object = "cup"  # find_object_name(result)
-        target_location = "kitchen"  # find_location_name(result)
+        target_object = 'cup'  # find_object_name(result)
+        target_location = 'kitchen'  # find_location_name(result)
         userdata.target_object = target_object
         userdata.target_location = target_location
 
         if len(target_object) > 0 and len(target_location) > 0:
-            return "succeeded"
+            return 'succeeded'
         else:
-            return "failed"
+            return 'failed'
 
     def send_request(self):
         self.future = self.cli.call_async(self.req)
@@ -90,19 +90,19 @@ class Voice(smach.State):
             rclpy.spin_once(self.node)
             if self.future.done():
                 response = self.future.result()
-                response.answer = "Bring me a cup from kitchen"
+                response.answer = 'Bring me a cup from kitchen'
                 break
 
         return response.answer
 
 
-# 移動関連のダミーステート
+# 移動関連の状態（ダミー）
 class Navigation(smach.State):
     def __init__(self, node):
         smach.State.__init__(
             self,
-            input_keys=["target_location"],
-            outcomes=["succeeded", "failed"])
+            input_keys=['target_location'],
+            outcomes=['succeeded', 'failed'])
 
         # Nodeを作成しています
         self.node = node
@@ -117,7 +117,7 @@ class Navigation(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info("ナビゲーションステートを開始します")
+        self.logger.info('ナビゲーション状態を開始します')
 
         self.req.command = userdata.target_location
         result = self.send_request()
@@ -137,20 +137,20 @@ class Navigation(smach.State):
                 response = self.future.result()
                 break
 
-        if response.answer == "reached":
+        if response.answer == 'reached':
             return True
         else:
             return False
 
 
-# 物体検出関連のダミーステート
+# 物体検出関連の状態（ダミー）
 class Vision(smach.State):
     def __init__(self, node):
         smach.State.__init__(
             self,
-            input_keys=["target_object"],
-            output_keys=["target_object_pos"],
-            outcomes=["succeeded", "failed"])
+            input_keys=['target_object'],
+            output_keys=['target_object_pos'],
+            outcomes=['succeeded', 'failed'])
 
         # Nodeを作成しています
         self.node = node
@@ -165,16 +165,16 @@ class Vision(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info("物体認識ステートを開始します")
+        self.logger.info('物体認識状態を開始します')
 
         self.req.command = userdata.target_object
         result = self.send_request()
         userdata.target_object_pos = [0.12, -0.03, 0.4]  # 単位は[m]
 
         if result:
-            return "succeeded"
+            return 'succeeded'
         else:
-            return "failed"
+            return 'failed'
 
     def send_request(self):
         self.future = self.cli.call_async(self.req)
@@ -186,19 +186,19 @@ class Vision(smach.State):
                 response = self.future.result()
                 break
 
-        if response.answer == "detected":
+        if response.answer == 'detected':
             return True
         else:
             return False
 
 
-# 物体把持関連のダミーステート
+# 物体把持関連の状態（ダミー）
 class Manipulation(smach.State):
     def __init__(self, node):
         smach.State.__init__(
             self,
-            input_keys=["target_object_pos"],
-            outcomes=["exit", "failed"])
+            input_keys=['target_object_pos'],
+            outcomes=['exit', 'failed'])
 
         # Nodeを作成しています
         self.node = node
@@ -214,18 +214,18 @@ class Manipulation(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info("物体把持ステートを開始します")
+        self.logger.info('物体把持状態を開始します')
 
         target_object_pos = userdata.target_object_pos
-        print(f"{target_object_pos}")
+        print(f'{target_object_pos}')
 
-        self.req.command = "start"
+        self.req.command = 'start'
         result = self.send_request()
 
         if result:
-            return "exit"
+            return 'exit'
         else:
-            return "failed"
+            return 'failed'
 
     def send_request(self):
         self.future = self.cli.call_async(self.req)
@@ -237,7 +237,7 @@ class Manipulation(smach.State):
                 response = self.future.result()
                 break
 
-        if response.answer == "reached":
+        if response.answer == 'reached':
             return True
         else:
             return False
