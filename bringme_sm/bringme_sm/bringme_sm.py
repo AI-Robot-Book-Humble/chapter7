@@ -46,7 +46,7 @@ def main():
     node.execute()
 
 
-# 音声関連の状態（ダミー）
+# 音声認識関連の状態
 class Voice(smach.State):
     def __init__(self, node):
         smach.State.__init__(
@@ -54,7 +54,7 @@ class Voice(smach.State):
             output_keys=['target_object', 'target_location'],
             outcomes=['succeeded', 'failed'])
 
-        # Nodeを作成しています
+        # Nodeを作成
         self.node = node
         self.logger = self.node.get_logger()
 
@@ -67,7 +67,7 @@ class Voice(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info('音声認識状態を開始します')
+        self.logger.info('音声認識の状態を開始します')
 
         self.req.command = 'start'
         self.send_request()
@@ -96,7 +96,7 @@ class Voice(smach.State):
         return response.answer
 
 
-# 移動関連の状態（ダミー）
+# ナビゲーションの状態
 class Navigation(smach.State):
     def __init__(self, node):
         smach.State.__init__(
@@ -104,7 +104,7 @@ class Navigation(smach.State):
             input_keys=['target_location'],
             outcomes=['succeeded', 'failed'])
 
-        # Nodeを作成しています
+        # Nodeを作成
         self.node = node
         self.logger = self.node.get_logger()
 
@@ -117,7 +117,7 @@ class Navigation(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info('ナビゲーション状態を開始します')
+        self.logger.info('ナビゲーションの状態を開始します')
 
         self.req.command = userdata.target_location
         result = self.send_request()
@@ -143,7 +143,7 @@ class Navigation(smach.State):
             return False
 
 
-# 物体検出関連の状態（ダミー）
+# ビジョンの状態
 class Vision(smach.State):
     def __init__(self, node):
         smach.State.__init__(
@@ -152,7 +152,7 @@ class Vision(smach.State):
             output_keys=['target_object_pos'],
             outcomes=['succeeded', 'failed'])
 
-        # Nodeを作成しています
+        # Nodeを作成
         self.node = node
         self.logger = self.node.get_logger()
 
@@ -165,7 +165,7 @@ class Vision(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info('物体認識状態を開始します')
+        self.logger.info('物体認識の状態を開始します')
 
         self.req.command = userdata.target_object
         result = self.send_request()
@@ -192,7 +192,7 @@ class Vision(smach.State):
             return False
 
 
-# 物体把持関連の状態（ダミー）
+# マニピュレーションの状態
 class Manipulation(smach.State):
     def __init__(self, node):
         smach.State.__init__(
@@ -200,7 +200,7 @@ class Manipulation(smach.State):
             input_keys=['target_object_pos'],
             outcomes=['exit', 'failed'])
 
-        # Nodeを作成しています
+        # Nodeを作成
         self.node = node
         self.logger = self.node.get_logger()
 
@@ -214,7 +214,7 @@ class Manipulation(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info('物体把持状態を開始します')
+        self.logger.info('マニピュレーションの状態を開始します')
 
         target_object_pos = userdata.target_object_pos
         print(f'{target_object_pos}')
