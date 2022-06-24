@@ -70,14 +70,15 @@ class Voice(smach.State):
         self.logger.info('音声認識の状態を開始します')
 
         self.req.command = 'start'
-        self.send_request()
+        result = self.send_request()
 
         target_object = 'cup'  # find_object_name(result)
         target_location = 'kitchen'  # find_location_name(result)
         userdata.target_object = target_object
         userdata.target_location = target_location
 
-        if len(target_object) > 0 and len(target_location) > 0:
+        # if len(target_object) > 0 and len(target_location) > 0:
+        if result:
             return 'succeeded'
         else:
             return 'failed'
@@ -93,7 +94,10 @@ class Voice(smach.State):
                 response.answer = 'Bring me a cup from kitchen'
                 break
 
-        return response.answer
+        if response.answer == 'recognized':
+            return True
+        else:
+            return False
 
 
 # ナビゲーションの状態
