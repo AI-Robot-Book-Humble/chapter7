@@ -165,7 +165,7 @@ class Vision(smach.State):
         self.result = None
 
     def execute(self, userdata):
-        self.logger.info('物体認識の状態を開始します')
+        self.logger.info('ビジョンの状態を開始します')
 
         self.req.command = userdata.target_object
         result = self.send_request()
