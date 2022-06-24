@@ -72,13 +72,12 @@ class Voice(smach.State):
         self.req.command = 'start'
         result = self.send_request()
 
-        target_object = 'cup'  # find_object_name(result)
-        target_location = 'kitchen'  # find_location_name(result)
-        userdata.target_object = target_object
-        userdata.target_location = target_location
-
-        # if len(target_object) > 0 and len(target_location) > 0:
         if result:
+            target_object = 'cup'  # find_object_name(result)
+            target_location = 'kitchen'  # find_location_name(result)
+            userdata.target_object = target_object
+            userdata.target_location = target_location
+
             return 'succeeded'
         else:
             return 'failed'
