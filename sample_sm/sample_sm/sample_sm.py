@@ -5,7 +5,7 @@ from rclpy.node import Node
 import smach
 
 
-# 探索ステートを定義します．
+# 探索状態を定義します．
 class Search(smach.State):
     def __init__(self, _node):
         smach.State.__init__(self, outcomes=['succeeded', 'finished'])
@@ -23,7 +23,7 @@ class Search(smach.State):
             return 'finished'
 
 
-# 食事ステートを定義します．
+# 食事状態を定義します．
 class Eat(smach.State):
     def __init__(self, _node):
         smach.State.__init__(self, outcomes=['done'])
@@ -34,17 +34,17 @@ class Eat(smach.State):
         return 'done'
 
 
-# ステートマシーンを実行するノードを定義します．
+# 状態マシーンを実行するノードを定義します．
 class StateMachine(Node):
     def __init__(self):
         super().__init__('state_machine')
 
     def execute(self):
-        # SMACHステートマシーンを作成
+        # Smach状態マシーンを作成
         sm = smach.StateMachine(outcomes=['end'])
         # Open the container
         with sm:
-            # コンテナにステートを追加
+            # コンテナに状態を追加
             smach.StateMachine.add(
                 'SEARCH', Search(self),
                 transitions={'succeeded': 'EAT', 'finished': 'end'})
@@ -52,7 +52,7 @@ class StateMachine(Node):
                 'EAT', Eat(self),
                 transitions={'done': 'SEARCH'})
 
-        # SMACHプランを実行
+        # Smachプランを実行
         outcome = sm.execute()
         self.get_logger().info(f'outcom: {outcome}')
 
