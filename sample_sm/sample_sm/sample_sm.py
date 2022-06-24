@@ -5,7 +5,7 @@ from rclpy.node import Node
 import smach
 
 
-# 探索状態を定義します．
+# 探索の状態を定義します．
 class Search(smach.State):
     def __init__(self, _node):
         smach.State.__init__(self, outcomes=['succeeded', 'finished'])
@@ -23,7 +23,7 @@ class Search(smach.State):
             return 'finished'
 
 
-# 食事状態を定義します．
+# 食事の状態を定義します．
 class Eat(smach.State):
     def __init__(self, _node):
         smach.State.__init__(self, outcomes=['done'])
