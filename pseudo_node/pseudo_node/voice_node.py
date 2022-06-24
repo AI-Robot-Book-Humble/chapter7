@@ -21,7 +21,7 @@ class VoiceServer(Node):
 
         if 0.5 > prob:
             self.get_logger().info('音声認識が成功しました')
-            response.answer = 'succeeded'
+            response.answer = 'recognized'
         else:
             self.get_logger().info('音声認識が失敗しました')
             response.answer = 'failed'
