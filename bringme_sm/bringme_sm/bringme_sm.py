@@ -5,13 +5,13 @@ import smach
 from airobot_interfaces.srv import StringCommand
 
 
-# Bring meタスクの状態マシーンを実行するノードを定義
+# Bring meタスクのステートマシーンを実行するノードを定義
 class Bringme_state(Node):
     def __init__(self):
         super().__init__('bringme_state')
 
     def execute(self):
-        # Smach状態マシーンを作成
+        # Smachステートマシーンを作成
         sm = smach.StateMachine(outcomes=['succeeded'])
 
         # コンテナに状態を追加
