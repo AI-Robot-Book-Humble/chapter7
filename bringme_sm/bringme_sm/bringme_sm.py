@@ -90,10 +90,9 @@ class Voice(smach.State):
             rclpy.spin_once(self.node)
             if self.future.done():
                 response = self.future.result()
-                response.answer = 'Bring me a cup from kitchen'
                 break
 
-        if response.answer == 'recognized':
+        if response.answer != '':
             return True
         else:
             return False
