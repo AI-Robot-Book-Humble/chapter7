@@ -5,7 +5,7 @@ import smach
 from airobot_interfaces.srv import StringCommand
 
 
-# Bring meタスクの状態マシーンを実行するノードを定義します．
+# Bring meタスクの状態マシーンを実行するノードを定義
 class Bringme_state(Node):
     def __init__(self):
         super().__init__('bringme_state')
