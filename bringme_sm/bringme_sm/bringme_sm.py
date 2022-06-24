@@ -73,11 +73,9 @@ class Voice(smach.State):
         result = self.send_request()
 
         if result:
-            target_object = 'cup'  # find_object_name(result)
-            target_location = 'kitchen'  # find_location_name(result)
-            userdata.target_object = target_object
-            userdata.target_location = target_location
-
+            userdata.target_object = self.target_object
+            userdata.target_location = self.target_location
+            
             return 'succeeded'
         else:
             return 'failed'
@@ -93,6 +91,9 @@ class Voice(smach.State):
                 break
 
         if response.answer != '':
+            self.target_object = 'cup'  # find_object_name(response.answer)
+            self.target_location = 'kitchen'  # find_location_name(response.answer)
+            
             return True
         else:
             return False
