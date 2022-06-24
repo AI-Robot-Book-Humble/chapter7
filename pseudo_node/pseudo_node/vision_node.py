@@ -16,16 +16,16 @@ class VisionServer(Node):
     def command_callback(self, request, response):
 
         prob = random.random()
-        self.get_logger().info(f"目標物体を探します")
+        self.get_logger().info(f'目標物体を探します')
 
         sleep(1)
 
         if 0.5 > prob:
-            self.get_logger().info("目標物体の検出が成功しました")
-            response.answer = "detected"
+            self.get_logger().info('目標物体の検出が成功しました')
+            response.answer = 'detected'
         else:
-            self.get_logger().info("目標物体の検出が失敗しました")
-            response.answer = "failed"
+            self.get_logger().info('目標物体の検出が失敗しました')
+            response.answer = 'failed'
 
         return response
 
