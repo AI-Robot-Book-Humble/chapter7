@@ -34,13 +34,13 @@ class Eat(smach.State):
         return 'done'
 
 
-# 状態マシーンを実行するノードを定義します．
+# ステートマシーンを実行するノードを定義します．
 class StateMachine(Node):
     def __init__(self):
         super().__init__('state_machine')
 
     def execute(self):
-        # Smach状態マシーンを作成
+        # Smachステートマシーンを作成
         sm = smach.StateMachine(outcomes=['end'])
         # Open the container
         with sm:
