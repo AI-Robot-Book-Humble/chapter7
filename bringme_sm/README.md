@@ -20,8 +20,7 @@ Bring meタスクのためのステートマシンのプログラム
 
 ## 履歴
 バグフィクスやチェンジログ
-- 2022-08-23: READMEの修正
-- 2022-03-15: 初期版
+- 2022-08-28: 初期版
 
 ## ライセンス
 Copyright (c) 2022, Yoshinobu Hagiwara and Masaki Ito
