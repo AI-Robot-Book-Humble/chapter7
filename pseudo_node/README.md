@@ -1,6 +1,7 @@
 # pseudo_node
 ## 概要
-7.4節のサンプルプログラムの疑似ノードのプログラム 
+7.4節のサンプルプログラム（疑似ノード）
+Bring meタスクにおける，音声，ナビゲーション，ビジョン，マニピュレーションの疑似ノードのサンプルプログラム
 
 ## インストール
   - [bringme_sm](https://github.com/AI-Robot-Book/chapter7/tree/master/bringme_sm)を参照してください．
