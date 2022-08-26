@@ -27,7 +27,6 @@
   ```
 
 ## ヘルプ
-- 今のところなし．
 
 ## 著者
 萩原　良信
@@ -38,9 +37,8 @@
 - 2022-03-15: 初期版
 
 ## ライセンス
-Copyright (c) 2022, Yoshinobu Hagiwara
+Copyright (c) 2022, Yoshinobu Hagiwara and Masaki Ito
 All rights reserved.
 This source code is licensed under the Apache-2.0 license found in the LICENSE file in the root directory of this project.
 
 ## 参考文献
-- 今のところなし．
