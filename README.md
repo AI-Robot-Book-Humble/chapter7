@@ -9,13 +9,13 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 - **sample_sm:** 二状態のステートマシンのサンプルプログラム
    
 ## 補足情報
-- Smachがpythonで使えるかの確認手順
-  - 以下のコマンドを実行
-  ```
-  python3 -c "import smach"
-  ```
-  - なにも出力されなければsmachはインストールされています
-  - ```ModuleNotFoundError: No module named 'smach'``` と出力され場合は次のコマンドを実行してください．
-  ```
-  pip3 install smach
-  ```
+- Smachがpythonで使えるか確認する手順
+   - 以下のコマンドを実行
+   ```
+   python3 -c "import smach"
+   ```
+   - なにも出力されなければsmachはインストールされています
+   - ModuleNotFoundError: No module named 'smach'と出力され場合は次のコマンドを実行してください．
+   ```
+   pip3 install smach
+   ```
