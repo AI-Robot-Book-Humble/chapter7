@@ -13,13 +13,11 @@ Bring meタスクのためのステートマシンのプログラム
   ```
 
 ## ヘルプ
-- 今のところなし．
 
 ## 著者
 萩原　良信
 
 ## 履歴
-バグフィクスやチェンジログ
 - 2022-08-28: 初期版
 
 ## ライセンス
@@ -28,4 +26,3 @@ All rights reserved.
 This source code is licensed under the Apache-2.0 license found in the LICENSE file in the root directory of this project.
 
 ## 参考文献
-- 今のところなし．
