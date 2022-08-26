@@ -4,7 +4,20 @@
 Bring meタスクのためのステートマシンのプログラム
 
 ## インストール
-インストール方法を書く．
+  - 以下のコマンドでワークスペースのsrcに移動してexecutive smachをGitHubからクローンします．
+  ```
+  cd ˜/airobot_ws/src
+  git clone https://github.com/jeffrey870517/executive_smach
+  ```
+  - 以下のコマンドでワークスペースのルートに戻り，ビルドします．
+  ```
+  cd ˜/airobot_ws
+  colcon build
+  ```
+  - ビルドが完了したらsetup.bashを実行します．
+  ```
+  source install/setup.bash
+  ```
 
 ## 実行
   - 端末を開いてステートマシーンを実行します．
