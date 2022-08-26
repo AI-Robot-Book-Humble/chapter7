@@ -4,10 +4,11 @@
 Bring meタスクのためのステートマシンのプログラム
 
 ## インストール
-  - 以下のコマンドでワークスペースのsrcに移動してexecutive smachをGitHubからクローンします．
+  - 以下のコマンドでワークスペースのsrcに移動してexecutive smachとchapter7のサンプルプログラムをGitHubからクローンします．
   ```
   cd ˜/airobot_ws/src
   git clone https://github.com/jeffrey870517/executive_smach
+  git clone https://github.com/AI-Robot-Book/chapter7
   ```
   - 以下のコマンドでワークスペースのルートに戻り，ビルドします．
   ```
