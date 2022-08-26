@@ -4,7 +4,21 @@
 二状態のステートマシンのプログラム
 
 ## インストール
-インストール方法を書く．
+  - 以下のコマンドでワークスペースのsrcに移動してexecutive smachとchapter7のサンプルプログラムをGitHubからクローンします．
+  ```
+  cd ˜/airobot_ws/src
+  git clone https://github.com/jeffrey870517/executive_smach
+  git clone https://github.com/AI-Robot-Book/chapter7
+  ```
+  - 以下のコマンドでワークスペースのルートに戻り，ビルドします．
+  ```
+  cd ˜/airobot_ws
+  colcon build
+  ```
+  - ビルドが完了したらsetup.bashを実行します．
+  ```
+  source install/setup.bash
+  ```
 
 ## 実行
   - 端末を開いて二状態のステートマシーンを実行します．
