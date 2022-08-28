@@ -15,7 +15,7 @@ setup(
     zip_safe=True,
     maintainer='Masaki Ito',
     maintainer_email='ai-robot-book@googlegroups.com',
-    description='TODO: Package description',
+    description='ROS2 package for simple state machine',
     license='Apache License 2.0',
     tests_require=['pytest'],
     entry_points={
