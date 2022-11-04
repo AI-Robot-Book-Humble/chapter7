@@ -17,5 +17,8 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
    - なにも出力されなければsmachはインストールされています
    - ModuleNotFoundError: No module named 'smach'と出力され場合は次のコマンドを実行してください．
    ```
-   pip3 install smach
+   cd ˜/airobot_ws/src
+   git clone https://github.com/DeepX-inc/executive_smach.git
+   cd ˜/airobot_ws
+   colcon build
    ```
