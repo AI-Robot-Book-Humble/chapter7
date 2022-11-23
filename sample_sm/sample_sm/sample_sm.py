@@ -41,7 +41,7 @@ class Search(smach.State):
 # 食事の状態を定義します．
 class Eat(smach.State):
     def __init__(self, _node):
-        #[*] 探索の状態における結果を事前に定義します．
+        #[*] 食事の状態における結果を事前に定義します．
         smach.State.__init__(self, outcomes=['done'])
         
         #[*] ロガーを定義します．
