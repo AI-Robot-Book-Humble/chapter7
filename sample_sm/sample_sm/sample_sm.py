@@ -65,7 +65,7 @@ class StateMachine(Node):
         # Smachステートマシーンを作成
         sm = smach.StateMachine(outcomes=['end'])
         
-        # 状態同士のつながりを定義します．
+        #[*] 状態同士のつながりを定義します．
         with sm:
             # コンテナに状態を追加
             smach.StateMachine.add(
