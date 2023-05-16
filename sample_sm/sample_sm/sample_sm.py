@@ -1,91 +1,71 @@
 # ファイル名：sample_sm.py
-#[*] PythonからROS2を使用するためのモジュールを読み込みます．
-import rclpy
+import rclpy #[*] PythonからROS2を使用するためのモジュールを読み込みます．
 from rclpy.node import Node
 
-#[*] ステートマシーンを作成するためのモジュールです．
-import smach
+import smach #[*] ステートマシーンを作成するためのモジュールです．
 
 
-# 探索の状態を定義します．
-class Search(smach.State):
+class Search(smach.State): # 探索の状態を定義します．
     def __init__(self, _node):
         #[*] 探索の状態における結果を事前に定義します．
-        smach.State.__init__(self, outcomes=['succeeded', 'finished'])
-        
-        #[*] 何回この状態に到達したのかをカウントする変数です．
-        self.counter = 0
-        
-        #[*] ロガーを定義します．
-        self.logger = _node.get_logger()
+        smach.State.__init__(self, outcomes=['succeeded', 'finished']) #[*] 探索の状態における結果を事前に定義します．
+
+        self.counter = 0 #[*] 何回この状態に到達したのかをカウントする変数です．
+
+        self.logger = _node.get_logger() #[*] ロガーを定義します．
 
     def execute(self, userdata):
-        #[*] 探索の状態にいることをログに残します．
-        self.logger.info('探索中です')
+        self.logger.info('探索中です') #[*] 探索の状態にいることをログに残します．
         
         if self.counter < 3:
-            #[*] 探索の状態へ訪れた回数が3回未満の場合
-            self.logger.info('スイーツを見つけました！')
+            self.logger.info('スイーツを見つけました！') #[*] 探索の状態へ訪れた回数が3回未満の場合
             self.counter += 1
-            
-            #[*] 'succeeded'という結果を返します．
-            return 'succeeded'
+
+            return 'succeeded' #[*] 'succeeded'という結果を返します．
         else:
-            #[*] 探索の状態へ訪れた回数が3回になった場合
-            self.logger.info('お腹いっぱいです・・・')
-            
-            #[*] 'finished'という結果を返します．
-            return 'finished'
+            self.logger.info('お腹いっぱいです・・・') #[*] 探索の状態へ訪れた回数が3回になった場合
+
+            return 'finished' #[*] 'finished'という結果を返します．
 
 
-# 食事の状態を定義します．
-class Eat(smach.State):
+class Eat(smach.State): # 食事の状態を定義します．
     def __init__(self, _node):
-        #[*] 食事の状態における結果を事前に定義します．
-        smach.State.__init__(self, outcomes=['done'])
-        
-        #[*] ロガーを定義します．
-        self.logger = _node.get_logger()
+
+        smach.State.__init__(self, outcomes=['done']) #[*] 食事の状態における結果を事前に定義します．
+
+        self.logger = _node.get_logger() #[*] ロガーを定義します．
 
     def execute(self, userdata):
-        #[*] 食事の状態にいることをログに残します．
-        self.logger.info('食べてます！')
-        
-        #[*] 'done'という結果を返します．
-        return 'done'
+
+        self.logger.info('食べてます！') #[*] 食事の状態にいることをログに残します．
+
+        return 'done' #[*] 'done'という結果を返します．
 
 
-# ステートマシーンを実行するノードを定義します．
-class StateMachine(Node):
+class StateMachine(Node): # ステートマシーンを実行するノードを定義します．
     def __init__(self):
-        #[*] ノード名をstate_machineとして登録します．
-        super().__init__('state_machine')
+
+        super().__init__('state_machine') #[*] ノード名をstate_machineとして登録します．
 
     def execute(self):
-        # Smachステートマシーンを作成
-        sm = smach.StateMachine(outcomes=['end'])
-        
-        #[*] 状態同士のつながりを定義します．
-        with sm:
-            # コンテナに状態を追加
-            smach.StateMachine.add(
+
+        sm = smach.StateMachine(outcomes=['end']) # Smachステートマシーンを作成
+
+        with sm: #[*] 状態同士のつながりを定義します．
+            smach.StateMachine.add( # コンテナに状態を追加
                 'SEARCH', Search(self),
                 transitions={'succeeded': 'EAT', 'finished': 'end'})
             smach.StateMachine.add(
                 'EAT', Eat(self),
                 transitions={'done': 'SEARCH'})
 
-        # Smachプランを実行
-        outcome = sm.execute()
+        outcome = sm.execute() # Smachプランを実行
         self.get_logger().info(f'outcom: {outcome}')
 
 
 def main():
-    #[*] rclpyを通したrosのコミュニケーションが行えるようにします．
-    rclpy.init()
-    
-    #[*] ステートマシーンのノードを初期化します．
-    node = StateMachine()
-    
-    #[*] ステートマシーンを実行します．
-    node.execute()
+    rclpy.init() #[*] rclpyを通したrosのコミュニケーションが行えるようにします．
+
+    node = StateMachine() #[*] ステートマシーンのノードを初期化します．
+
+    node.execute() #[*] ステートマシーンを実行します．
