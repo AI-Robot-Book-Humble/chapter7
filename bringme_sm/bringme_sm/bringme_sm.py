@@ -1,20 +1,22 @@
 import rclpy #[*] PythonからROS2を使用するためのモジュールを読み込みます．
 from rclpy.node import Node
-
 import smach #[*] ステートマシーンを作成するためのモジュールです．
 
 from airobot_interfaces.srv import StringCommand #[*] サービス通信を行うための型を読み込みます．
 
 
-class Bringme_state(Node): # Bring meタスクのステートマシーンを実行するノードを定義
+# Bring meタスクのステートマシーンを実行するノードを定義
+class Bringme_state(Node):
     def __init__(self):
         super().__init__('bringme_state') #[*] ノード名を bringme_state として登録します．
 
     def execute(self):
-        sm = smach.StateMachine(outcomes=['succeeded']) # Smachステートマシーンを作成
+        # Smachステートマシーンを作成
+        sm = smach.StateMachine(outcomes=['succeeded'])
 
+        # コンテナに状態を追加
         with sm: #[*] 状態同士のつながりを定義します．
-            smach.StateMachine.add( # コンテナに状態を追加
+            smach.StateMachine.add(
                 'VOICE',
                 Voice(self),
                 {'succeeded': 'NAVIGATION', 'failed': 'VOICE'})
@@ -34,29 +36,30 @@ class Bringme_state(Node): # Bring meタスクのステートマシーンを実�
                 Manipulation(self),
                 {'failed': 'VISION', 'exit': 'succeeded'})
 
-        sm.execute() # Smachプランを実行
+        # Smachプランを実行
+        sm.execute()
 
 
 def main():
     rclpy.init() #[*] rclpyを通したrosのコミュニケーションが行えるようにします．
-
     node = Bringme_state() #[*] ステートマシーンのノードを初期化します．
-    
     node.execute() #[*] ステートマシーンを実行します．
 
 
-class Voice(smach.State): # 音声認識関連の状態
+# 音声認識関連の状態
+class Voice(smach.State):
     def __init__(self, node):
         smach.State.__init__( #[*] 音声認識関連の状態における結果と，他の状態に値を渡す際の名前を事前に定義します．
             self,
             output_keys=['target_object', 'target_location'],
             outcomes=['succeeded', 'failed'])
 
-        self.node = node # Nodeを作成
-        
+        # Nodeを作成
+        self.node = node
         self.logger = self.node.get_logger() #[*] ロガーを定義します．
         
-        self.cli = self.node.create_client(StringCommand, 'voice/command') # サービスにおけるクライアントを作成
+        # サービスにおけるクライアントを作成
+        self.cli = self.node.create_client(StringCommand, 'voice/command')
         while not self.cli.wait_for_service(timeout_sec=1.0):
             self.logger.info('サービスへの接続待ちです・・・')
         self.req = StringCommand.Request()
@@ -80,7 +83,8 @@ class Voice(smach.State): # 音声認識関連の状態
     def send_request(self):
         self.future = self.cli.call_async(self.req) #[*] サーバと通信を行うためのクライアントを作成します．
 
-        while rclpy.ok(): # サービスを動作させる処理
+        # サービスを動作させる処理
+        while rclpy.ok():
             rclpy.spin_once(self.node)
             if self.future.done():
                 response = self.future.result()
@@ -96,18 +100,19 @@ class Voice(smach.State): # 音声認識関連の状態
 
 
 # ナビゲーションの状態
-class Navigation(smach.State): # ナビゲーションの状態
+class Navigation(smach.State):
     def __init__(self, node):
         smach.State.__init__( #[*] ナビゲーションの状態における結果と，他の状態に値を渡す際の名前を事前に定義します．
             self,
             input_keys=['target_location'],
             outcomes=['succeeded', 'failed'])
 
-        self.node = node # Nodeを作成
-        
+        # Nodeを作成
+        self.node = node
         self.logger = self.node.get_logger() #[*] ロガーを定義します．
         
-        self.cli = self.node.create_client(StringCommand, 'navigation/command') # サービスにおけるクライアントを作成
+        # サービスにおけるクライアントを作成
+        self.cli = self.node.create_client(StringCommand, 'navigation/command')
         while not self.cli.wait_for_service(timeout_sec=1.0):
             self.logger.info('サービスへの接続待ちです・・・')
         self.req = StringCommand.Request()
@@ -128,7 +133,8 @@ class Navigation(smach.State): # ナビゲーションの状態
     def send_request(self):
         self.future = self.cli.call_async(self.req) #[*] サーバと通信を行うためのクライアントを作成します．
 
-        while rclpy.ok(): # サービスを動作させる処理
+        # サービスを動作させる処理
+        while rclpy.ok():
             rclpy.spin_once(self.node)
             if self.future.done():
                 response = self.future.result()
@@ -140,7 +146,8 @@ class Navigation(smach.State): # ナビゲーションの状態
             return False
 
 
-class Vision(smach.State): # ビジョンの状態
+# ビジョンの状態
+class Vision(smach.State):
     def __init__(self, node):
         smach.State.__init__( #[*] ビジョンの状態における結果と，他の状態に値を渡す際の名前を事前に定義します．
             self,
@@ -148,11 +155,12 @@ class Vision(smach.State): # ビジョンの状態
             output_keys=['target_object_pos'],
             outcomes=['succeeded', 'failed'])
 
-        self.node = node # Nodeを作成
-        
+        # Nodeを作成
+        self.node = node
         self.logger = self.node.get_logger() #[*] ロガーを定義します．
 
-        self.cli = self.node.create_client(StringCommand, 'vision/command') # サービスにおけるクライアントを作成
+        # サービスにおけるクライアントを作成
+        self.cli = self.node.create_client(StringCommand, 'vision/command')
         while not self.cli.wait_for_service(timeout_sec=1.0):
             self.logger.info('サービスへの接続待ちです・・・')
         self.req = StringCommand.Request()
@@ -164,7 +172,6 @@ class Vision(smach.State): # ビジョンの状態
 
         self.req.command = userdata.target_object #[*] 物体認識のサービスを実行するようにリクエストを送信します．
         result = self.send_request()
-        
         userdata.target_object_pos = [0.12, -0.03, 0.4]   #[*] 物体認識が成功したとして，物体の位置を代入しています．単位は[m]
 
         if result: #[*] 物体を認識した場合
@@ -175,7 +182,8 @@ class Vision(smach.State): # ビジョンの状態
     def send_request(self):
         self.future = self.cli.call_async(self.req) #[*] サーバと通信を行うためのクライアントを作成します．
 
-        while rclpy.ok(): # サービスを動作させる処理
+        # サービスを動作させる処理
+        while rclpy.ok():
             rclpy.spin_once(self.node)
             if self.future.done():
                 response = self.future.result()
@@ -187,18 +195,20 @@ class Vision(smach.State): # ビジョンの状態
             return False #[*] 失敗を返します．
 
 
-class Manipulation(smach.State): # マニピュレーションの状態
+# マニピュレーションの状態
+class Manipulation(smach.State):
     def __init__(self, node):
         smach.State.__init__( #[*] マニピュレーションの状態における結果と，他の状態に値を渡す際の名前を事前に定義します．
             self,
             input_keys=['target_object_pos'],
             outcomes=['exit', 'failed'])
 
-        self.node = node # Nodeを作成
-        
+        # Nodeを作成
+        self.node = node
         self.logger = self.node.get_logger() #[*] ロガーを定義します．
 
-        self.cli = self.node.create_client(  # サービスにおけるクライアントを作成
+        # サービスにおけるクライアントを作成
+        self.cli = self.node.create_client(
             StringCommand, 'manipulation/command')
         while not self.cli.wait_for_service(timeout_sec=1.0):
             self.logger.info('サービスへの接続待ちです・・・')
@@ -223,7 +233,8 @@ class Manipulation(smach.State): # マニピュレーションの状態
     def send_request(self):
         self.future = self.cli.call_async(self.req) #[*] サーバと通信を行うためのクライアントを作成します．
 
-        while rclpy.ok(): # サービスを動作させる処理
+        # サービスを動作させる処理
+        while rclpy.ok():
             rclpy.spin_once(self.node)
             if self.future.done():
                 response = self.future.result()
