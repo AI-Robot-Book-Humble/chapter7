@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'sample_sm'
+package_name = 'sample_sm_smach'
 
 setup(
     name=package_name,
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'sample_sm = sample_sm.sample_sm:main'
+            'sample_sm = sample_sm_smach.sample_sm:main'
         ],
     },
 )
