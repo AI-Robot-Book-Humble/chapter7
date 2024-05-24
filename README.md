@@ -2,6 +2,29 @@
 ## 概要
 ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷・タン著，講談社）第７章のサンプルプログラムと補足情報などを掲載しています．
 
+## インストール方法
+これから，本リポジトリをインストールするための手順を説明します．
+
+1. 本リポジトリーをダウンロードします．
+   ```bash
+   $ cd ~/airobot_ws/src/
+   $ git clone https://github.com/AI-Robot-Book-Humble/chapter3
+   ```
+
+2. 必要なROS関連のパッケージをインストールします．
+   ```bash
+   $ sudo apt-get update
+   $ sudo apt-get install -y ros-${ROS_DISTRO}-executive-smach ros-${ROS_DISTRO}-flexbe-core
+   ```
+> [!NOTE]
+> ROSはすでにインストールされている場合は， `{ROS_DISTRO}` という部分は自動的に `humble` に書き換えられます.
+
+3. 本リポジトリーをコンパイルします．
+   ```bash
+   $ cd ~/airobot_ws
+   $ colcon build
+   ```
+
 ## ディレクトリ構成
 
 - **[bringme_sm](https://github.com/AI-Robot-Book/chapter7/tree/master/bringme_sm):** Bring meタスクのステートマシンのサンプルプログラム
