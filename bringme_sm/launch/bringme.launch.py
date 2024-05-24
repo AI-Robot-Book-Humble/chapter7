@@ -5,7 +5,7 @@ def generate_launch_description():
     return LaunchDescription([
         # 起動したいノードを記述
         Node(
-            package='bringme_sm',
+            package='bringme_sm_smach',
             executable='bringme_sm',
         ),
 

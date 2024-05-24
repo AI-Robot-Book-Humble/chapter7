@@ -2,7 +2,7 @@ import os
 from glob import glob
 from setuptools import setup
 
-package_name = 'bringme_sm'
+package_name = 'bringme_sm_smach'
 
 setup(
     name=package_name,
@@ -23,7 +23,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'bringme_sm = bringme_sm.bringme_sm:main'
+            'bringme_sm = bringme_sm_smach.bringme_sm_smach:main'
         ],
     },
 )

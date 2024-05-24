@@ -1,4 +1,4 @@
-# bringme_sm
+# bringme_sm_smach
 ## 概要
 7.4節のサンプルプログラム  
 Bring meタスクのためのステートマシンのプログラム
