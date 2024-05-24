@@ -6,7 +6,7 @@ def generate_launch_description():
         # 起動したいノードを記述
         Node(
             package='bringme_sm_smach',
-            executable='bringme_sm',
+            executable='bringme_sm_smach',
         ),
 
         Node(
