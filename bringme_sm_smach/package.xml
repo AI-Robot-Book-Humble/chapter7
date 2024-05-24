@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>bringme_sm</name>
+  <name>bringme_sm_smach</name>
   <version>0.0.0</version>
   <description>ROS2 package for the state machine of Bring Me task</description>
   <maintainer email="ai-robot-book@googlegroups.com">Masaki Ito</maintainer>
