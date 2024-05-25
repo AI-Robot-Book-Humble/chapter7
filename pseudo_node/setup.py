@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'pseudo_node'
+package_name = 'pseudo_node_service'
 
 setup(
     name=package_name,
@@ -20,10 +20,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'manipulation_node = pseudo_node.manipulation_node:main',
-            'navigation_node = pseudo_node.navigation_node:main',
-            'vision_node = pseudo_node.vision_node:main',
-            'voice_node = pseudo_node.voice_node:main'
+            'manipulation_node = pseudo_node_service.manipulation_node:main',
+            'navigation_node = pseudo_node_service.navigation_node:main',
+            'vision_node = pseudo_node_service.vision_node:main',
+            'voice_node = pseudo_node_service.voice_node:main'
         ],
     },
 )
