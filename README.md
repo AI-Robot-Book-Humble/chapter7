@@ -8,13 +8,18 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 1. 本リポジトリーをダウンロードします．
    ```bash
    $ cd ~/airobot_ws/src/
-   $ git clone https://github.com/AI-Robot-Book-Humble/chapter3
+   $ git clone https://github.com/AI-Robot-Book-Humble/chapter7
    ```
 
 2. 必要なROS関連のパッケージをインストールします．
    ```bash
    $ sudo apt-get update
-   $ sudo apt-get install -y ros-${ROS_DISTRO}-executive-smach ros-${ROS_DISTRO}-flexbe-core
+   $ sudo apt-get install -y \
+      ros-${ROS_DISTRO}-executive-smach \
+      ros-${ROS_DISTRO}-flexbe-core \
+      ros-${ROS_DISTRO}-flexbe-widget \
+      ros-${ROS_DISTRO}-flexbe-behavior-engine \
+
    ```
 > [!NOTE]
 > ROSはすでにインストールされている場合は， `{ROS_DISTRO}` という部分は自動的に `humble` に書き換えられます.
@@ -25,10 +30,19 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
    $ colcon build
    ```
 
+4. 初めての`flexbe_app`のインストールの場合は，必要な`nwjs`バイナリーファイルをダウンロードします．
+   ```bash
+   $ cd ~/airobot_ws/src/
+   $ git clone -b humble https://github.com/FlexBE/flexbe_app.git
+   $ cd ~/airobot_ws
+   $ colcon build
+   $ ros2 run flexbe_app nwjs_install
+   ```
+
 ## ディレクトリ構成
 
 - **[bringme_sm](https://github.com/AI-Robot-Book/chapter7/tree/master/bringme_sm):** Bring meタスクのステートマシンのサンプルプログラム
-- **[pseudo_node](https://github.com/AI-Robot-Book/chapter7/tree/master/pseudo_node):** Bring meタスクにおける，音声，ナビゲーション，ビジョン，マニピュレーションの疑似ノードのサンプルプログラム
+- **[pseudo_node_service](https://github.com/AI-Robot-Book/chapter7/tree/master/pseudo_node_service):** Bring meタスクにおける，音声，ナビゲーション，ビジョン，マニピュレーションの疑似ノードのサンプルプログラム
 - **[sample_sm](https://github.com/AI-Robot-Book/chapter7/tree/master/sample_sm):** 二状態のステートマシンのサンプルプログラム
    
 ## 補足情報
