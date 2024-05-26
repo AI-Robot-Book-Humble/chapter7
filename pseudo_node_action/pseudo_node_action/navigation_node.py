@@ -1,40 +1,69 @@
-from airobot_interfaces.srv import StringCommand
-
 import rclpy
+from rclpy.action import ActionServer
 from rclpy.node import Node
+
+from airobot_interfaces.action import StringCommand
 
 import random
 from time import sleep
 
 
-class NavigationServer(Node):
-
+class NavigationActionServer(Node):
     def __init__(self):
-        super().__init__('navigation_server')
-        self.srv = self.create_service(
-            StringCommand, 'navigation/command', self.command_callback)
+        super().__init__('navigation_action_server')
+        self._nav_action_server = ActionServer(
+            self,
+            StringCommand,
+            'ps_navigation/command',
+            self.execute_callback)
 
-    def command_callback(self, request, response):
-        sleep(1)
+    def execute_callback(self, goal_handle):
+        self.get_logger().info(f'目標座標 `{goal_handle.request.command}` への移動を開始します')
 
-        prob = random.random()
-        self.get_logger().info(f'目標座標へ移動します {request.command}')
+        result_msg = StringCommand.Result()
+        result_msg.answer = ''
 
-        if 0.7 > prob:
-            self.get_logger().info('目標座標への移動が成功しました')
-            response.answer = "reached"
-        else:
-            self.get_logger().info('目標座標への移動が失敗しました')
-            response.answer = 'failed'
+        feedback_msg = StringCommand.Feedback()
+        feedback_msg.process = ''
 
-        return response
+        wait_time = 10
+
+        for i in range(wait_time):
+            sleep(1)
+            prob = random.random()
+
+            if 0.95 > prob:
+                self.get_logger().info(f'目標座標 `{goal_handle.request.command}` へ移動しています')
+                
+                feedback_msg.process = 'navigating' if i < wait_time-1 else 'reached'
+                goal_handle.publish_feedback(feedback_msg)
+
+            else:
+                self.get_logger().info(f'目標座標 `{goal_handle.request.command}` への移動が失敗しました')
+
+                feedback_msg.process = ''
+                goal_handle.publish_feedback(feedback_msg)
+                goal_handle.abort()
+
+                result_msg.answer = 'failed'
+                return result_msg
+
+        self.get_logger().info(f'目標座標 `{goal_handle.request.command}` への移動が成功しました')
+
+        goal_handle.succeed()
+
+        result_msg.answer = feedback_msg.process
+        return result_msg
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    navigation_server = NavigationServer()
+    navigation_action_server = NavigationActionServer()
 
-    rclpy.spin(navigation_server)
+    rclpy.spin(navigation_action_server)
 
     rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
