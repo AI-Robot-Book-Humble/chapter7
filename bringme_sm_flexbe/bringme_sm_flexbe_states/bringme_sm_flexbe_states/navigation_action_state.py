@@ -14,64 +14,49 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Example Action FlexBE State."""
+"""Vision Action FlexBE State."""
 
-import math
+# import math
 
 from rclpy.duration import Duration
 
 from flexbe_core import EventState, Logger
 from flexbe_core.proxy import ProxyActionClient
 
-# import of required action
-# This ExampleActionState is based on the standard action tutorials
-#    https://docs.ros.org/en/iron/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Actions/Understanding-ROS2-Actions.html
-#    https://docs.ros.org/en/iron/Tutorials/Beginner-CLI-Tools/Introducing-Turtlesim/Introducing-Turtlesim.html
-#    https://docs.ros2.org/latest/api/turtlesim/action/RotateAbsolute.html
-from turtlesim.action import RotateAbsolute
+from airobot_interfaces.action import StringCommand
 
-
-class ExampleActionState(EventState):
+class NavigationActionState(EventState):
     """
-    Actionlib actions are the most common basis for state implementations.
-
-    These are used to interface with longer running more computationally intensive calculations in a
-    non-blocking manner.
-
-    State implementations should be lightweight and non-blocking so that they execute() completes within the
-    desired update period.
-
-    The ROS 2 action library provides a non-blocking, high-level interface for robot capabilities.
+    Action通信による目的地へのナビゲーションを起動し，その結果をuserdata.textに代入する
 
     Execution notes:
-        To execute the associated behavior, you need to first run the turtlesim node that provdes the action server
-        ros2 run turtlesim turtlesim_node
+        こちらの状態を実行するために，必要なAction Serverを起動してください：
+        ros2 run pseudo_node_action navigation_node
 
-        To display the available actions:
+        実行可能なAction一覧を表示させるために，以下のコマンドを実行してください：
         ros2 action list
 
-    Elements defined here for UI
     Parameters
-    -- timeout             Maximum time allowed (seconds)
-    -- action_topic        Name of action to invoke
+    -- timeout             最大許容時間 (seconds)
+    -- action_topic        ナビゲーションのアクション名
 
     Outputs
-    <= rotation_complete   Only a few dishes have been cleaned.
-    <= failed              Failed for some reason.
-    <= canceled            User canceled before completion.
+    <= done                Only a few dishes have been cleaned.
+    <= failed              何らかの理由で失敗
+    <= canceled            ユーザーからのキャンセルリクエストが送信された
     <= timeout             The action has timed out.
 
     User data
-    ># angle     float     Desired rotational angle in (degrees) (Input)
-    #> duration  float     Amount time taken to complete rotation (seconds) (Output)
+    ># destination  string 目的地への移動の実行時間 (string型) (Input)
+    #> text         string 移動の結果 (string型) (Output)
 
     """
 
-    def __init__(self, timeout, action_topic="/turtle1/rotate_absolute"):
+    def __init__(self, timeout, action_topic="ps_navigation/command"):
         # See example_state.py for basic explanations.
-        super().__init__(outcomes=['rotation_complete', 'failed', 'canceled', 'timeout'],
-                         input_keys=['angle'],
-                         output_keys=['duration'])
+        super().__init__(outcomes=['done', 'failed', 'canceled', 'timeout'],
+                         input_keys=['time'],
+                         output_keys=['text'])
 
         self._timeout = Duration(seconds=timeout)
         self._timeout_sec = timeout
@@ -80,9 +65,9 @@ class ExampleActionState(EventState):
         # Create the action client when building the behavior.
         # Using the proxy client provides asynchronous access to the result and status
         # and makes sure only one client is used, no matter how often this state is used in a behavior.
-        ProxyActionClient.initialize(ExampleActionState._node)
+        ProxyActionClient.initialize(NavigationActionState._node)
 
-        self._client = ProxyActionClient({self._topic: RotateAbsolute},
+        self._client = ProxyActionClient({self._topic: StringCommand},
                                          wait_duration=0.0)  # pass required clients as dict (topic: type)
 
         # It may happen that the action client fails to send the action goal.
@@ -103,14 +88,21 @@ class ExampleActionState(EventState):
 
         # Check if the action has been finished
         if self._client.has_result(self._topic):
-            _ = self._client.get_result(self._topic)  # The delta result value is not useful here
-            userdata.duration = self._node.get_clock().now() - self._start_time
-            Logger.loginfo('Rotation complete')
-            self._return = 'rotation_complete'
-            return self._return
+            result = self._client.get_result(self._topic)  # The delta result value is not useful here
+            userdata.text = result.answer
+
+            if userdata.text == 'failed':
+                Logger.logwarn('ナビゲーションが失敗しました')
+                self._return = 'failed'
+                return self._return
+            else:
+                Logger.loginfo(f'ナビゲーションの結果: {userdata.text}')
+                self._return = 'done'
+                return self._return
 
         if self._node.get_clock().now().nanoseconds - self._start_time.nanoseconds > self._timeout.nanoseconds:
             # Checking for timeout after we check for goal response
+            Logger.loginfo('Timeout')
             self._return = 'timeout'
             return 'timeout'
 
@@ -123,21 +115,21 @@ class ExampleActionState(EventState):
         self._error = False
         self._return = None
 
-        if 'angle' not in userdata:
+        if 'destination' not in userdata:
             self._error = True
-            Logger.logwarn("ExampleActionState requires userdata.angle key!")
+            Logger.logwarn("NavigationActionState requires userdata.destination key!")
             return
 
         # Recording the start time to set rotation duration output
         self._start_time = self._node.get_clock().now()
 
-        goal = RotateAbsolute.Goal()
+        goal = StringCommand.Goal()
 
-        if isinstance(userdata.angle, (float, int)):
-            goal.theta = (userdata.angle * math.pi) / 180  # convert to radians
+        if isinstance(userdata.destination, (str)):
+            goal.command = str(userdata.destination)  # convert to radians
         else:
             self._error = True
-            Logger.logwarn("Input is %s. Expects an int or a float.", type(userdata.angle).__name__)
+            Logger.logwarn("Input is %s. Expects an string.", type(userdata.destination).__name__)
 
         # Send the goal.
         try:
@@ -146,7 +138,7 @@ class ExampleActionState(EventState):
             # Since a state failure not necessarily causes a behavior failure,
             # it is recommended to only print warnings, not errors.
             # Using a linebreak before appending the error log enables the operator to collapse details in the GUI.
-            Logger.logwarn(f"Failed to send the RotateAbsolute command:\n  {type(exc)} - {exc}")
+            Logger.logwarn(f"Failed to send the Time command:\n  {type(exc)} - {exc}")
             self._error = True
 
     def on_exit(self, userdata):
