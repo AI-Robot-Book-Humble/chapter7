@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright 2023 David Conner
+# Copyright 2024 Keith Valentin
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@
 ###########################################################
 
 """
-Define Example Action State Behavior.
+Define Bringme Action State Behavior.
 
-Created on July 21, 2023
-@author: David Conner
+Created on Tue May 28 2024
+@author: Keith Valentin
 """
 
 
@@ -36,9 +36,10 @@ from flexbe_core import ConcurrencyContainer
 from flexbe_core import Logger
 from flexbe_core import OperatableStateMachine
 from flexbe_core import PriorityContainer
-from flexbe_states.log_key_state import LogKeyState
-from flexbe_states.log_state import LogState
-from flexbe_turtlesim_demo_flexbe_states.rotate_turtle_state import RotateTurtleState
+from bringme_sm_flexbe_states.manipulation_action_state import ManipulationActionState
+from bringme_sm_flexbe_states.navigation_action_state import NavigationActionState
+from bringme_sm_flexbe_states.vision_action_state import VisionActionState
+from bringme_sm_flexbe_states.voice_action_state import VoiceActionState
 
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
@@ -46,30 +47,30 @@ from flexbe_turtlesim_demo_flexbe_states.rotate_turtle_state import RotateTurtle
 # [/MANUAL_IMPORT]
 
 
-class ExampleActionStateBehaviorSM(Behavior):
+class BringmeActionStateBehaviorSM(Behavior):
     """
-    Define Example Action State Behavior.
+    Define Bringme Action State Behavior.
 
-    A simple behavior demonstrating the ExampleActionState interface to the turtlesim RotateAbsolute action server.
-
-    The example includes userdata defined in the statemachine configuration.
+    This behavior allows to execute the Bringme Task
 
     """
 
     def __init__(self, node):
         super().__init__()
-        self.name = 'Example Action State Behavior'
+        self.name = 'Bringme Action State Behavior'
 
         # parameters of this behavior
+        self.add_parameter('init_time', '10')
 
         # references to used behaviors
         OperatableStateMachine.initialize_ros(node)
         ConcurrencyContainer.initialize_ros(node)
         PriorityContainer.initialize_ros(node)
         Logger.initialize(node)
-        LogKeyState.initialize_ros(node)
-        LogState.initialize_ros(node)
-        RotateTurtleState.initialize_ros(node)
+        ManipulationActionState.initialize_ros(node)
+        NavigationActionState.initialize_ros(node)
+        VisionActionState.initialize_ros(node)
+        VoiceActionState.initialize_ros(node)
 
         # Additional initialization code can be added inside the following tags
         # [MANUAL_INIT]
@@ -79,54 +80,43 @@ class ExampleActionStateBehaviorSM(Behavior):
         # Behavior comments:
 
     def create(self):
-        # x:1096 y:62, x:1095 y:363
+        timeout = 15
+        # x:33 y:367, x:130 y:365
         _state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
-        _state_machine.userdata.angle_degrees = 90.0
+        _state_machine.userdata.time = self.init_time
 
         # Additional creation code can be added inside the following tags
         # [MANUAL_CREATE]
 
         # [/MANUAL_CREATE]
         with _state_machine:
-            # x:102 y:157
-            OperatableStateMachine.add('LogRequest',
-                                       LogKeyState(text="Request to rotate {} degrees", severity=2),
-                                       transitions={'done': 'Rotate Turtle State'},
-                                       autonomy={'done': Autonomy.Off},
-                                       remapping={'data': 'angle_degrees'})
+            # x:372 y:42
+            OperatableStateMachine.add('Voice',
+                                       VoiceActionState(timeout=timeout, action_topic="ps_voice/command"),
+                                       transitions={'done': 'Navigation', 'failed': 'Voice', 'canceled': 'failed', 'timeout': 'failed'},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off, 'timeout': Autonomy.Off},
+                                       remapping={'time': 'time', 'text': 'text', 'target': 'target', 'destination': 'destination'})
 
-            # x:659 y:190
-            OperatableStateMachine.add('Log Failed',
-                                       LogState(text="Failed", severity=Logger.REPORT_WARN),
-                                       transitions={'done': 'failed'},
-                                       autonomy={'done': Autonomy.Off})
+            # x:390 y:227
+            OperatableStateMachine.add('Navigation',
+                                       NavigationActionState(timeout=timeout, action_topic="ps_navigation/command"),
+                                       transitions={'done': 'Vision', 'failed': 'Navigation', 'canceled': 'failed', 'timeout': 'failed'},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off, 'timeout': Autonomy.Off},
+                                       remapping={'destination': 'destination', 'text': 'text'})
 
-            # x:658 y:57
-            OperatableStateMachine.add('Log Success',
-                                       LogState(text="Success", severity=Logger.REPORT_HINT),
-                                       transitions={'done': 'finished'},
-                                       autonomy={'done': Autonomy.Off})
+            # x:387 y:373
+            OperatableStateMachine.add('Vision',
+                                       VisionActionState(timeout=timeout, action_topic="ps_vision/command"),
+                                       transitions={'done': 'Manipulation', 'failed': 'Vision', 'canceled': 'failed', 'timeout': 'failed'},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off, 'timeout': Autonomy.Off},
+                                       remapping={'target': 'target', 'text': 'text'})
 
-            # x:657 y:480
-            OperatableStateMachine.add('Log Timeout',
-                                       LogState(text="Timeout", severity=Logger.REPORT_WARN),
-                                       transitions={'done': 'failed'},
-                                       autonomy={'done': Autonomy.Off})
-
-            # x:244 y:294
-            OperatableStateMachine.add('Rotate Turtle State',
-                                       RotateTurtleState(timeout=10, action_topic="/turtle1/rotate_absolute"),
-                                       transitions={'rotation_complete': 'Log Success', 'failed': 'Log Failed',
-                                                    'canceled': 'Log Canceled', 'timeout': 'Log Timeout'},
-                                       autonomy={'rotation_complete': Autonomy.Off, 'failed': Autonomy.Off,
-                                                 'canceled': Autonomy.Off, 'timeout': Autonomy.Off},
-                                       remapping={'angle': 'angle_degrees', 'duration': 'duration'})
-
-            # x:656 y:337
-            OperatableStateMachine.add('Log Canceled',
-                                       LogState(text="Canceled", severity=Logger.REPORT_WARN),
-                                       transitions={'done': 'failed'},
-                                       autonomy={'done': Autonomy.Off})
+            # x:392 y:529
+            OperatableStateMachine.add('Manipulation',
+                                       ManipulationActionState(timeout=timeout, action_topic="ps_manipulation/command"),
+                                       transitions={'done': 'finished', 'failed': 'Vision', 'canceled': 'failed', 'timeout': 'failed'},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off, 'timeout': Autonomy.Off},
+                                       remapping={'target': 'target', 'text': 'text'})
 
         return _state_machine
 
