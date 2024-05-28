@@ -23,7 +23,7 @@
 ###########################################################
 
 """
-Define Bringme Action State Behavior.
+Define Bringme Action Behavior.
 
 Created on Tue May 28 2024
 @author: Keith Valentin
@@ -47,9 +47,9 @@ from bringme_sm_flexbe_states.voice_action_state import VoiceActionState
 # [/MANUAL_IMPORT]
 
 
-class BringmeActionStateBehaviorSM(Behavior):
+class BringmeActionBehaviorSM(Behavior):
     """
-    Define Bringme Action State Behavior.
+    Define Bringme Action Behavior.
 
     This behavior allows to execute the Bringme Task
 
@@ -57,7 +57,7 @@ class BringmeActionStateBehaviorSM(Behavior):
 
     def __init__(self, node):
         super().__init__()
-        self.name = 'Bringme Action State Behavior'
+        self.name = 'Bringme Action Behavior'
 
         # parameters of this behavior
         self.add_parameter('init_time', '10')

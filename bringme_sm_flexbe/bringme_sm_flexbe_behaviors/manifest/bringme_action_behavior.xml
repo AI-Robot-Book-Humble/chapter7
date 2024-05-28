@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<behavior name="Bringme Action State Behavior">
+<behavior name="Bringme Action Behavior">
 
-    <executable package_path="bringme_sm_flexbe_behaviors.bringme_action_state_behavior_sm" class="BringmeActionStateBehaviorSM" />
+    <executable package_path="bringme_sm_flexbe_behaviors.bringme_action_behavior_sm" class="BringmeActionBehaviorSM" />
     <tagstring>action</tagstring>
     <author>Keith Valentin</author>
     <date>May 28, 2024</date>
     <description>
-        A simple behavior demonstrating the BringmeActionState interface to the action server.
+        A simple behavior demonstrating the BringmeAction interface to the action server.
 
         The example includes userdata defined in the statemachine configuration.
 

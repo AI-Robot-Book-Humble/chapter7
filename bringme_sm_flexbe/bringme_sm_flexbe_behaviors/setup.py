@@ -21,7 +21,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'example_behavior_sm = bringme_sm_flexbe_behaviors.example_behavior_sm',
+            'bringme_action_behavior_sm = bringme_sm_flexbe_behaviors.bringme_action_behavior_sm',
         ],
     },
 )
