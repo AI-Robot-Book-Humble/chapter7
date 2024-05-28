@@ -59,7 +59,7 @@ class SearchState(EventState):
 
             return 'succeeded' #[*] 'succeeded'という結果を返します．
         else:
-            Logger.loginfo('もうお腹いっぱいです・・・') #[*] 探索の状態へ訪れた回数が3回になった場合
+            Logger.loginfo('スイーツを見つけたけど，もうお腹いっぱいです・・・') #[*] 探索の状態へ訪れた回数が3回になった場合
 
             return 'finished' #[*] 'finished'という結果を返します．
 
