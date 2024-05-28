@@ -36,7 +36,8 @@ from flexbe_core import ConcurrencyContainer
 from flexbe_core import Logger
 from flexbe_core import OperatableStateMachine
 from flexbe_core import PriorityContainer
-from flexbe_states.log_state import LogState
+from sample_sm_flexbe_states.eat_state import EatState
+from sample_sm_flexbe_states.search_state import SearchState
 
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
@@ -49,6 +50,7 @@ class SampleStateBehaviorSM(Behavior):
     Define Sample State Behavior.
 
     This is a Sample State Behavior for FlexBe
+
     """
 
     def __init__(self, node):
@@ -56,13 +58,15 @@ class SampleStateBehaviorSM(Behavior):
         self.name = 'Sample State Behavior'
 
         # parameters of this behavior
+        self.add_parameter('init_counter', 0)
 
         # references to used behaviors
         OperatableStateMachine.initialize_ros(node)
         ConcurrencyContainer.initialize_ros(node)
         PriorityContainer.initialize_ros(node)
         Logger.initialize(node)
-        LogState.initialize_ros(node)
+        EatState.initialize_ros(node)
+        SearchState.initialize_ros(node)
 
         # Additional initialization code can be added inside the following tags
         # [MANUAL_INIT]
@@ -74,17 +78,26 @@ class SampleStateBehaviorSM(Behavior):
     def create(self):
         # x:30 y:365, x:130 y:365
         _state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
+        _state_machine.userdata.eat_counter = self.init_counter
 
         # Additional creation code can be added inside the following tags
         # [MANUAL_CREATE]
 
         # [/MANUAL_CREATE]
         with _state_machine:
-            # x:72 y:187
-            OperatableStateMachine.add('LogTest',
-                                       LogState(text='test', severity=Logger.REPORT_HINT),
-                                       transitions={'done': 'finished'},
-                                       autonomy={'done': Autonomy.Off})
+            # x:280 y:52
+            OperatableStateMachine.add('Search',
+                                       SearchState(),
+                                       transitions={'succeeded': 'Eat', 'finished': 'finished', 'failed': 'failed'},
+                                       autonomy={'succeeded': Autonomy.Off, 'finished': Autonomy.Off, 'failed': Autonomy.Off},
+                                       remapping={'eat_counter': 'eat_counter'})
+
+            # x:278 y:241
+            OperatableStateMachine.add('Eat',
+                                       EatState(),
+                                       transitions={'done': 'Search'},
+                                       autonomy={'done': Autonomy.Off},
+                                       remapping={'eat_counter': 'eat_counter'})
 
         return _state_machine
 
