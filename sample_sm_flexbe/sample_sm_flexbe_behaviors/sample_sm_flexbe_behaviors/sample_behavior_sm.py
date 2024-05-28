@@ -23,7 +23,7 @@
 ###########################################################
 
 """
-Define Sample State Behavior.
+Define Sample Behavior.
 
 Created on Tue May 28 2024
 @author: Keith Valentin
@@ -45,17 +45,17 @@ from sample_sm_flexbe_states.search_state import SearchState
 # [/MANUAL_IMPORT]
 
 
-class SampleStateBehaviorSM(Behavior):
+class SampleBehaviorSM(Behavior):
     """
-    Define Sample State Behavior.
+    Define Sample Behavior.
 
-    This is a Sample State Behavior for FlexBe
+    This is a Sample Behavior for FlexBe
 
     """
 
     def __init__(self, node):
         super().__init__()
-        self.name = 'Sample State Behavior'
+        self.name = 'Sample Behavior'
 
         # parameters of this behavior
         self.add_parameter('init_counter', 0)
