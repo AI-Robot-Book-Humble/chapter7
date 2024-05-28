@@ -27,8 +27,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'example_action_state = bringme_sm_flexbe_states.example_action_state',
-            'example_state = bringme_sm_flexbe_states.example_state',
+            'manipulation_action_state = bringme_sm_flexbe_states.manipulation_action_state',
+            'navigation_action_state = bringme_sm_flexbe_states.navigation_action_state',
+            'vision_action_state = bringme_sm_flexbe_states.vision_action_state',
+            'voice_action_state = bringme_sm_flexbe_states.voice_action_state',
         ],
     },
 )
