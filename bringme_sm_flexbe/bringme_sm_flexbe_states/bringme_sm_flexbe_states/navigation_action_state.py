@@ -52,10 +52,10 @@ class NavigationActionState(EventState):
 
     """
 
-    def __init__(self, timeout, action_topic="ps_navigation/command"):
+    def __init__(self, timeout, action_topic="/ps_navigation/command"):
         # See example_state.py for basic explanations.
         super().__init__(outcomes=['done', 'failed', 'canceled', 'timeout'],
-                         input_keys=['time'],
+                         input_keys=['destination'],
                          output_keys=['text'])
 
         self._timeout = Duration(seconds=timeout)

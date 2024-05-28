@@ -25,7 +25,7 @@ from flexbe_core.proxy import ProxyActionClient
 
 from airobot_interfaces.action import StringCommand
 
-class NavigationActionState(EventState):
+class ManipulationActionState(EventState):
     """
     Action通信による物体把持を起動し，その結果をuserdata.textに代入する
 
@@ -52,10 +52,10 @@ class NavigationActionState(EventState):
 
     """
 
-    def __init__(self, timeout, action_topic="ps_manipulation/command"):
+    def __init__(self, timeout, action_topic="/ps_manipulation/command"):
         # See example_state.py for basic explanations.
         super().__init__(outcomes=['done', 'failed', 'canceled', 'timeout'],
-                         input_keys=['time'],
+                         input_keys=['target'],
                          output_keys=['text'])
 
         self._timeout = Duration(seconds=timeout)

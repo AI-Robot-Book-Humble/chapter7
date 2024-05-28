@@ -47,16 +47,18 @@ class VoiceActionState(EventState):
     <= timeout             The action has timed out.
 
     User data
-    ># time     string     音声認識の実行時間 (秒数) (Input)
-    #> text     string     音声認識の結果 (string型) (Output)
+    ># time        string  音声認識の実行時間 (秒数) (Input)
+    #> text        string  音声認識の結果 (string型) (Output)
+    #> target      string  音声認識の把持物体の結果 (string型) (Output)
+    #> destination string  音声認識の目的地の結果 (string型) (Output)
 
     """
 
-    def __init__(self, timeout, action_topic="ps_voice/command"):
+    def __init__(self, timeout, action_topic="/ps_voice/command"):
         # See example_state.py for basic explanations.
         super().__init__(outcomes=['done', 'failed', 'canceled', 'timeout'],
                          input_keys=['time'],
-                         output_keys=['text'])
+                         output_keys=['text', 'target', 'destination'])
 
         self._timeout = Duration(seconds=timeout)
         self._timeout_sec = timeout
@@ -97,6 +99,11 @@ class VoiceActionState(EventState):
                 return self._return
             else:
                 Logger.loginfo(f'音声認識の結果: {userdata.text}')
+
+                # 本来であれば，音声認識のデータを処理する必要がある
+                userdata.target      = 'cup'
+                userdata.destination = 'kitchen'
+
                 self._return = 'done'
                 return self._return
 

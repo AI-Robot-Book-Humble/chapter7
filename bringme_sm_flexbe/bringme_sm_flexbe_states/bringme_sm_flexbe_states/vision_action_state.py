@@ -47,15 +47,15 @@ class VisionActionState(EventState):
     <= timeout             The action has timed out.
 
     User data
-    ># object   string     物体認識の実行時間 (string型) (Input)
+    ># target   string     物体認識の実行時間 (string型) (Input)
     #> text     string     物体認識の結果 (string型) (Output)
 
     """
 
-    def __init__(self, timeout, action_topic="ps_vision/command"):
+    def __init__(self, timeout, action_topic="/ps_vision/command"):
         # See example_state.py for basic explanations.
         super().__init__(outcomes=['done', 'failed', 'canceled', 'timeout'],
-                         input_keys=['time'],
+                         input_keys=['target'],
                          output_keys=['text'])
 
         self._timeout = Duration(seconds=timeout)
@@ -115,9 +115,9 @@ class VisionActionState(EventState):
         self._error = False
         self._return = None
 
-        if 'object' not in userdata:
+        if 'target' not in userdata:
             self._error = True
-            Logger.logwarn("VisionActionState requires userdata.object key!")
+            Logger.logwarn("VisionActionState requires userdata.target key!")
             return
 
         # Recording the start time to set rotation duration output
@@ -125,11 +125,11 @@ class VisionActionState(EventState):
 
         goal = StringCommand.Goal()
 
-        if isinstance(userdata.object, (str)):
-            goal.command = str(userdata.object)  # convert to radians
+        if isinstance(userdata.target, (str)):
+            goal.command = str(userdata.target)  # convert to radians
         else:
             self._error = True
-            Logger.logwarn("Input is %s. Expects an string.", type(userdata.object).__name__)
+            Logger.logwarn("Input is %s. Expects an string.", type(userdata.target).__name__)
 
         # Send the goal.
         try:
