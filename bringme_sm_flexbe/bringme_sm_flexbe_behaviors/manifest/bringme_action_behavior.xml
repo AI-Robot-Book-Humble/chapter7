@@ -17,5 +17,11 @@
     <!-- Contained Behaviors -->
 
     <!-- Available Parameters -->
+    <params>
+
+        <param type="text" name="init_time" default="10" label="init_time" hint="Sets the init_time" />
+
+    </params>
+
 
 </behavior>

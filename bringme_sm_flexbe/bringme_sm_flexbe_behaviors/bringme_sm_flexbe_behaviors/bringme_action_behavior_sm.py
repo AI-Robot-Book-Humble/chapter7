@@ -25,7 +25,7 @@
 """
 Define Bringme Action Behavior.
 
-Created on Tue May 28 2024
+Created on May 28, 2024
 @author: Keith Valentin
 """
 
@@ -51,7 +51,9 @@ class BringmeActionBehaviorSM(Behavior):
     """
     Define Bringme Action Behavior.
 
-    This behavior allows to execute the Bringme Task
+    A simple behavior demonstrating the BringmeAction interface to the action server.
+
+    The example includes userdata defined in the statemachine configuration.
 
     """
 
