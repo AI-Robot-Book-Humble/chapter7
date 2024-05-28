@@ -27,8 +27,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'example_action_state = sample_sm_flexbe_states.example_action_state',
-            'example_state = sample_sm_flexbe_states.example_state',
             'eat_state = sample_sm_flexbe_states.eat_state',
             'search_state = sample_sm_flexbe_states.search_state',
         ],
