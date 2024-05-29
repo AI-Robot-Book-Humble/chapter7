@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright 2023 Christopher Newport University
+# Copyright 2024 Keith Valentin
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Vision Action FlexBE State."""
-
-# import math
+"""Manipulation Action FlexBE State."""
 
 from rclpy.duration import Duration
 
@@ -25,35 +23,35 @@ from flexbe_core.proxy import ProxyActionClient
 
 from airobot_interfaces.action import StringCommand
 
+
 class ManipulationActionState(EventState):
     """
-    Action通信による物体把持を起動し，その結果をuserdata.textに代入する
+    Action通信による物体把持を起動し，その結果をuserdata.textに代入します
 
-    Execution notes:
-        こちらの状態を実行するために，必要なAction Serverを起動してください：
-        ros2 run pseudo_node_action manipulation_node
+    起動方法:
+        こちらの状態を実行するために，必要なAction Serverを起動してください
+        $ ros2 run pseudo_node_action manipulation_node
 
-        実行可能なAction一覧を表示させるために，以下のコマンドを実行してください：
-        ros2 action list
+        実行可能なAction一覧を表示させるために，以下のコマンドを実行してください
+        $ ros2 action list
 
-    Parameters
+    パラメーター
     -- timeout             最大許容時間 (seconds)
     -- action_topic        物体把持のアクション名
 
-    Outputs
-    <= done                Only a few dishes have been cleaned.
-    <= failed              何らかの理由で失敗
-    <= canceled            ユーザーからのキャンセルリクエストが送信された
-    <= timeout             The action has timed out.
+    出力
+    <= done                物体把持が成功した場合
+    <= failed              何らかの理由で失敗した場合
+    <= canceled            ユーザーからのキャンセルリクエストした場合
+    <= timeout             目的地への移動の最大許容時間を超過した場合
 
-    User data
-    ># target     string   物体把持の実行時間 (string型) (Input)
-    #> text       string   物体把持の結果 (string型) (Output)
+    Userdata
+    ># target     string   把持の対象物体の名前 (string型) (Input)
+    #> text       string   Actionによる物体把持の結果 (string型) (Output)
 
     """
 
     def __init__(self, timeout, action_topic="/ps_manipulation/command"):
-        # See example_state.py for basic explanations.
         super().__init__(outcomes=['done', 'failed', 'canceled', 'timeout'],
                          input_keys=['target'],
                          output_keys=['text'])
@@ -62,89 +60,83 @@ class ManipulationActionState(EventState):
         self._timeout_sec = timeout
         self._topic = action_topic
 
-        # Create the action client when building the behavior.
-        # Using the proxy client provides asynchronous access to the result and status
-        # and makes sure only one client is used, no matter how often this state is used in a behavior.
+        # FlexBEのProxyActionClientを用いてActionのClient側を作成します
         ProxyActionClient.initialize(ManipulationActionState._node)
-
         self._client = ProxyActionClient({self._topic: StringCommand},
-                                         wait_duration=0.0)  # pass required clients as dict (topic: type)
+                                         wait_duration=0.0)
 
-        # It may happen that the action client fails to send the action goal.
-        self._error = False
-        self._return = None  # Retain return value in case the outcome is blocked by operator
-        self._start_time = None
+        self._error      = False # ActionのClientからGoalの送信を失敗した場合
+        self._return     = None  # オペレーターによる結果の出力を拒む場合，戻り値を保存します
+        self._start_time = None  # 開始時間を初期化します
 
     def execute(self, userdata):
-        # While this state is active, check if the action has been finished and evaluate the result.
+        '''
+        起動中，Actionが終了したかどうかを確認し，その結果によってoutcomeを決定します
+        '''
 
-        # Check if the client failed to send the goal.
+        # _errorが起きたかを確認します
         if self._error:
-            return 'failed'
+            return 'failed' # 'failed'という結果を返します
 
+        # 遷移がブロックされた場合には前の戻り値を戻します
         if self._return is not None:
-            # Return prior outcome in case transition is blocked by autonomy level
             return self._return
 
-        # Check if the action has been finished
+        # Actionが終了したかを確認します
         if self._client.has_result(self._topic):
-            result = self._client.get_result(self._topic)  # The delta result value is not useful here
+            result = self._client.get_result(self._topic) # Actionの結果を取得します
             userdata.text = result.answer
 
             if userdata.text == 'failed':
                 Logger.logwarn('物体把持が失敗しました')
                 self._return = 'failed'
-                return self._return
+                return self._return # 'failed'という結果を返します
             else:
                 Logger.loginfo(f'物体把持の結果: {userdata.text}')
                 self._return = 'done'
-                return self._return
+                return self._return # 'done'という結果を返します
 
         if self._node.get_clock().now().nanoseconds - self._start_time.nanoseconds > self._timeout.nanoseconds:
-            # Checking for timeout after we check for goal response
-            Logger.loginfo('Timeout')
+            # 最大許容時間を超過したかを確認します
+            Logger.loginfo('最大許容時間を経過しました')
             self._return = 'timeout'
-            return 'timeout'
+            return self._return # 'timeout'という結果を返します
 
-        # If the action has not yet finished, no outcome will be returned and the state stays active.
+        # Actionはまだ終了していない場合，状態を終了させません
         return None
 
     def on_enter(self, userdata):
-
-        # make sure to reset the error state since a previous state execution might have failed
+        # データの初期化を行います
         self._error = False
         self._return = None
 
+        # userdataにtargetという情報があるかを確認します
         if 'target' not in userdata:
             self._error = True
-            Logger.logwarn("ManipulationActionState requires userdata.target key!")
+            Logger.logwarn("ManipulationActionState を実行するには， userdata.target が必要です!")
             return
 
-        # Recording the start time to set rotation duration output
+        # 開始時間を記録します
         self._start_time = self._node.get_clock().now()
 
-        goal = StringCommand.Goal()
-
-        if isinstance(userdata.target, (str)):
-            goal.command = str(userdata.target)  # convert to radians
-        else:
+        # 入力された値はstring型か確認します
+        if not isinstance(userdata.target, (str)):
             self._error = True
-            Logger.logwarn("Input is %s. Expects an string.", type(userdata.target).__name__)
+            Logger.logwarn('入力された型は %s です．string型が求められています', type(userdata.target).__name__)
 
-        # Send the goal.
+        # GoalをActionのServerに送信します
+        goal = StringCommand.Goal()
+        goal.command = str(userdata.target)
+
         try:
             self._client.send_goal(self._topic, goal, wait_duration=self._timeout_sec)
         except Exception as exc:  # pylint: disable=W0703
-            # Since a state failure not necessarily causes a behavior failure,
-            # it is recommended to only print warnings, not errors.
-            # Using a linebreak before appending the error log enables the operator to collapse details in the GUI.
-            Logger.logwarn(f"Failed to send the Time command:\n  {type(exc)} - {exc}")
+            Logger.logwarn(f"Goalの送信が失敗しました:\n  {type(exc)} - {exc}")
             self._error = True
 
     def on_exit(self, userdata):
-        # Make sure that the action is not running when leaving this state.
-        # A situation where the action would still be active is for example when the operator manually triggers an outcome.
-
+        # Actionが起動していないことを確認します
+        # Actionが動作していることは，オペレーターによる手動的な出力の結果が送信されたと考えられます
         if not self._client.has_result(self._topic):
             self._client.cancel(self._topic)
-            Logger.loginfo('Cancelled active action goal.')
+            Logger.loginfo('動作中のActionをキャンセルします．')
