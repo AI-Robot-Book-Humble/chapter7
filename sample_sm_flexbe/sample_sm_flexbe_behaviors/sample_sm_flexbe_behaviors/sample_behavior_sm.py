@@ -95,8 +95,8 @@ class SampleBehaviorSM(Behavior):
             # x:278 y:241
             OperatableStateMachine.add('Eat',
                                        EatState(),
-                                       transitions={'done': 'Search'},
-                                       autonomy={'done': Autonomy.Off},
+                                       transitions={'done': 'Search', 'failed': 'failed'},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off},
                                        remapping={'eat_counter': 'eat_counter'})
 
         return _state_machine
