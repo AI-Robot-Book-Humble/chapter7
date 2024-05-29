@@ -1,7 +1,6 @@
 import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
-# from airobot_interfaces.srv import StringCommand
 
 from airobot_interfaces.action import StringCommand
 

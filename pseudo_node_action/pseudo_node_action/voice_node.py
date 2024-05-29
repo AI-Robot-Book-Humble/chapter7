@@ -2,7 +2,6 @@ import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
 
-# from airobot_interfaces.srv import StringCommand
 from airobot_interfaces.action import StringCommand
 
 import random
@@ -52,7 +51,6 @@ class VoiceActionServer(Node):
             else:
                 self.get_logger().info('音声認識が失敗しました')
 
-                # feedback_msg.process(temp_out_text)
                 feedback_msg.process = ''                
                 goal_handle.publish_feedback(feedback_msg)
                 goal_handle.abort()

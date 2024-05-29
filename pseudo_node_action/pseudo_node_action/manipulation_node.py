@@ -9,7 +9,6 @@ from time import sleep
 
 
 class ManipulationActionServer(Node):
-
     def __init__(self):
         super().__init__('manipulation_action_server')
         self.mani_action_server = ActionServer(
@@ -44,7 +43,7 @@ class ManipulationActionServer(Node):
                 
                 feedback_msg.process = ''
                 goal_handle.publish_feedback(feedback_msg)
-                goal_handle.abort() # check
+                goal_handle.abort()
 
                 result_msg.answer = 'failed'
                 return result_msg
