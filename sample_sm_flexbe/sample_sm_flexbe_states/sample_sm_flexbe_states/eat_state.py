@@ -45,7 +45,7 @@ class EatState(EventState):
         self._return = None
 
     def execute(self, userdata):
-        # _errorがあるかを確認します
+        # _errorが起きたかを確認します
         if self._error:
             return 'failed' # 'failed'という結果を返します
 
