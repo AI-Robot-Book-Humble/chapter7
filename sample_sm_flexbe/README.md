@@ -1,38 +1,40 @@
-# Sample State Machine with FlexBE
+# sample_sm_flexbe
 
-TODO
-
-
-## Example States in `sample_sm_flexbe_states`
-
-Packages providing FlexBE states are identified by an export tag in the `package.xml`:
-
-```xml
-  <export>
-      <flexbe_states />
-      <build_type>ament_cmake</build_type>
-  </export>
-```
-
-* `example_state.py `
-  * Example state implementation with extra console logging to show the state life cycle.
-
-* `example_action_state.py`
+7.3節のサンプルプログラム  
+FlexBEによる二状態のステートマシンのプログラム
 
 
-## Example Behaviors in `sample_sm_flexbe_behaviors`
+## 実行
 
-Packages providing FlexBE behaviors are identified by an export tag in the `package.xml`:
+1. FlexBE Appを実行します．
+  ```
+  ros2 launch flexbe_app flexbe_full.launch.py
+  ```
 
-```xml
-  <export>
-      <flexbe_behaviors />
-      <build_type>ament_cmake</build_type>
-  </export>
-```
+> [!NOTE]
+> `FlexBe App`が起動されない場合は，`nwjs`がインストールされていない可能性があります．
+その際，`ros2 run flexbe_app nwjs_install`を実行してください．
 
-  * `example_behavior_sm.py`
-    * Most basic example state machine
+2. FlexBE Appの上部にある`Load Behavior`を押して，右側に現れるBehavior一覧から`Sample Behavior`を選択してください．
 
-  * `example_action_behavior_sm.py` 
-    * Uses the `ExampleActionState` with the standard action tutorials 
+3. その後，FlexBe Appの上部の`Runtime Control`を押し，`Start Execution`でステートマシンを開始させます．
+
+> [!NOTE]
+> `init_counter`はユーザーが食べたスナックの数のことを表します．その値を自由に変えられます．
+
+5. `Behavior Feedback`にステートマシンの結果を確認できます．
+
+
+## Statesの一覧
+
+* [search_state.py](sample_sm_flexbe_states/sample_sm_flexbe_states/search_state.py):
+  * スナックを探す状態の実装
+
+* [eat_state.py](sample_sm_flexbe_states/sample_sm_flexbe_states/eat_state.py):
+  * 見つけたスナックを食べる状態の実装 
+
+
+## Behaviorsの一覧
+
+* [sample_behavior_sm.py](sample_sm_flexbe_behaviors/sample_sm_flexbe_behaviors/sample_behavior_sm.py):
+  * 音声認識・食事の状態を含めたSampleタスクのためのステートマシン
