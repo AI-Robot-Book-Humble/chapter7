@@ -1,3 +1,5 @@
+import os
+from glob import glob
 from setuptools import setup
 
 package_name = 'pseudo_node_action'
@@ -10,10 +12,11 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name), glob('launch/*.launch.py')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='Masaki Ito',
+    maintainer='Keith Valentin',
     maintainer_email='ai-robot-book@googlegroups.com',
     description='Pseudo nodes for the state machine of Bring Me task',
     license='Apache License 2.0',
