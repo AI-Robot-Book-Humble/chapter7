@@ -23,7 +23,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'bringme_sm = bringme_sm_smach.bringme_sm_smach:main'
+            'bringme_sm_smach = bringme_sm_smach.bringme_sm_smach:main'
         ],
     },
 )
