@@ -7,9 +7,7 @@
     <author>Keith Valentin</author>
     <date>May 28, 2024</date>
     <description>
-        A simple behavior demonstrating the BringmeAction interface to the action server.
-
-        The example includes userdata defined in the statemachine configuration.
+        Bringmeタスクのステートマシンの一例
 
     </description>
 

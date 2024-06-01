@@ -51,9 +51,7 @@ class BringmeActionBehaviorSM(Behavior):
     """
     Define Bringme Action Behavior.
 
-    A simple behavior demonstrating the BringmeAction interface to the action server.
-
-    The example includes userdata defined in the statemachine configuration.
+    Bringmeタスクのステートマシンの一例
 
     """
 
