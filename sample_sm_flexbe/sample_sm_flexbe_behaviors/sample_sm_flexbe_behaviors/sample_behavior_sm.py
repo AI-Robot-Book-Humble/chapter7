@@ -50,7 +50,6 @@ class SampleBehaviorSM(Behavior):
     Define Sample Behavior.
 
     This is a Sample Behavior for FlexBe
-
     """
 
     def __init__(self, node):
