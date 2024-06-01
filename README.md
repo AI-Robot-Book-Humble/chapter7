@@ -28,30 +28,28 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
       ros-${ROS_DISTRO}-executive-smach \
       ros-${ROS_DISTRO}-flexbe-core \
       ros-${ROS_DISTRO}-flexbe-widget \
-      ros-${ROS_DISTRO}-flexbe-behavior-engine \
+      ros-${ROS_DISTRO}-flexbe-behavior-engine
    ```
 > [!NOTE]
 > ROSはすでにインストールされている場合は， `{ROS_DISTRO}` という部分は自動的に `humble` に書き換えられますので，ご安心ください.
 
-3. 本リポジトリーをコンパイルします．
-   ```bash
-   $ cd ~/airobot_ws
-   $ colcon build
-   ```
-
-4. 初めて`flexbe_app`のインストールの場合は，必要な`nwjs`バイナリーファイルをダウンロードします．
+3. 初めて`FlexBE`を利用する場合は、`flexbe_app`をダウンロードします．
    ```bash
    $ cd ~/airobot_ws/src/
    $ git clone -b humble https://github.com/FlexBE/flexbe_app.git
-   $ cd ~/airobot_ws
-   $ colcon build
-   $ ros2 run flexbe_app nwjs_install
    ```
 
-5. ビルドが完了したらsetup.bashを実行します．
-  ```bash
-  $ source install/setup.bash
-  ```
+4. ダウンロードしたリポジトリをコンパイルします
+   ```bash
+   $ cd ~/airobot_ws
+   $ colcon build --symlink-install
+   $ source ~/airobot_ws/install/setup.bash
+   ```
+
+5. 最後に，`flex_app`を初めて使用する場合，必要な依存パッケージをダウンロードします．
+   ```bash
+   $ ros2 run flexbe_app nwjs_install
+   ```
 
 
 ## ディレクトリ構成
