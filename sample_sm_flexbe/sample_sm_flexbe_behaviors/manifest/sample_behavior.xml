@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Sample Behavior">
+
+    <executable package_path="sample_sm_flexbe_behaviors.sample_behavior_sm" class="SampleBehaviorSM" />
+    <tagstring>sample</tagstring>
+    <author>Keith Valentin</author>
+    <date>Tue May 28 2024</date>
+    <description>
+        FlexBEの基本を理解するためのステートマシンの一例
+    </description>
+
+
+    <!-- Contained Behaviors -->
+
+    <!-- Available Parameters -->
+    <params>
+
+        <param type="numeric" name="init_eat_counter" default="0" label="init_eat_counter" hint="Sets the init_eat_counter">
+            <min value="0" />
+            <max value="10" />
+        </param>
+
+    </params>
+
+
+</behavior>

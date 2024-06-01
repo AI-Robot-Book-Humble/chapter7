@@ -1,10 +1,11 @@
+#!/usr/bin/env python
 from setuptools import setup
 
-package_name = 'sample_sm_smach'
+package_name = 'sample_sm_flexbe_behaviors'
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version='0.0.1',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -13,14 +14,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='Masaki Ito',
-    maintainer_email='ai-robot-book@googlegroups.com',
-    description='ROS2 package for a simple state machine',
-    license='Apache License 2.0',
+    maintainer='phil',
+    maintainer_email='philsplus@gmail.com',
+    description='TODO: Package description',
+    license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'sample_sm_smach = sample_sm_smach.sample_sm_smach:main'
+            'sample_behavior_sm = sample_sm_flexbe_behaviors.sample_behavior_sm',
         ],
     },
 )
