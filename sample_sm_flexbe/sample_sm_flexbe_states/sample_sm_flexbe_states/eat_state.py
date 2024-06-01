@@ -19,7 +19,7 @@ from rclpy.duration import Duration
 
 from flexbe_core import EventState, Logger
 
-import random
+from time import sleep
 
 
 class EatState(EventState):
@@ -43,6 +43,7 @@ class EatState(EventState):
 
     def execute(self, userdata):
         # eat処理を開始します
+        sleep(1)
         Logger.loginfo('スイーツを1個食べます！') # 食事をしたことをログに残します
         userdata.eat_counter += 1 # eat_counterを更新します
 

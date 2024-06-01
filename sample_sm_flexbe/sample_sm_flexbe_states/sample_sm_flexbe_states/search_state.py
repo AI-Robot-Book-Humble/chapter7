@@ -19,6 +19,8 @@ from rclpy.duration import Duration
 
 from flexbe_core import EventState, Logger
 
+from time import sleep
+
 
 class SearchState(EventState):
     """
@@ -41,6 +43,7 @@ class SearchState(EventState):
 
     def execute(self, userdata):
         # search処理を開始します
+        sleep(1)
         Logger.loginfo('スイーツを探索しています') # 探索の状態にいることをログに残します
 
         if userdata.eat_counter < 3:
