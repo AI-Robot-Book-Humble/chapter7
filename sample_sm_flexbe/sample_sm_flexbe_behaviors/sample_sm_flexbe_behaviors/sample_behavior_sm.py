@@ -49,7 +49,7 @@ class SampleBehaviorSM(Behavior):
     """
     Define Sample Behavior.
 
-    This is a Sample Behavior for FlexBe
+    FlexBEの基本を理解するためのステートマシンの一例
     """
 
     def __init__(self, node):
