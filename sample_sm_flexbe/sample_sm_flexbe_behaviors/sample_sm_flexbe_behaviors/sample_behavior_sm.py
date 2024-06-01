@@ -58,7 +58,7 @@ class SampleBehaviorSM(Behavior):
         self.name = 'Sample Behavior'
 
         # parameters of this behavior
-        self.add_parameter('init_counter', 0)
+        self.add_parameter('init_eat_counter', 0)
 
         # references to used behaviors
         OperatableStateMachine.initialize_ros(node)
@@ -78,7 +78,7 @@ class SampleBehaviorSM(Behavior):
     def create(self):
         # x:30 y:365, x:130 y:365
         _state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
-        _state_machine.userdata.eat_counter = self.init_counter
+        _state_machine.userdata.eat_counter = self.init_eat_counter
 
         # Additional creation code can be added inside the following tags
         # [MANUAL_CREATE]
@@ -88,15 +88,15 @@ class SampleBehaviorSM(Behavior):
             # x:280 y:52
             OperatableStateMachine.add('Search',
                                        SearchState(),
-                                       transitions={'succeeded': 'Eat', 'finished': 'finished', 'failed': 'failed'},
-                                       autonomy={'succeeded': Autonomy.Off, 'finished': Autonomy.Off, 'failed': Autonomy.Off},
+                                       transitions={'succeeded': 'Eat', 'finished': 'finished'},
+                                       autonomy={'succeeded': Autonomy.Off, 'finished': Autonomy.Off},
                                        remapping={'eat_counter': 'eat_counter'})
 
             # x:278 y:241
             OperatableStateMachine.add('Eat',
                                        EatState(),
-                                       transitions={'done': 'Search', 'failed': 'failed'},
-                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off},
+                                       transitions={'succeeded': 'Search'},
+                                       autonomy={'succeeded': Autonomy.Off},
                                        remapping={'eat_counter': 'eat_counter'})
 
         return _state_machine

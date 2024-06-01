@@ -17,7 +17,7 @@
     <!-- Available Parameters -->
     <params>
 
-        <param type="numeric" name="init_counter" default="0" label="init_counter" hint="Sets the init_counter">
+        <param type="numeric" name="init_eat_counter" default="0" label="init_eat_counter" hint="Sets the init_eat_counter">
             <min value="0" />
             <max value="10" />
         </param>
