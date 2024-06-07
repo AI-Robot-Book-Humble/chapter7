@@ -37,4 +37,4 @@ FlexBEによる二状態のステートマシンのプログラム
 ## Behaviorsの一覧
 
 * [sample_behavior_sm.py](sample_sm_flexbe_behaviors/sample_sm_flexbe_behaviors/sample_behavior_sm.py):
-  * 音声認識・食事の状態を含めたSampleタスクのためのステートマシン
+  * 食事の状態を含めたSampleタスクのためのステートマシン
