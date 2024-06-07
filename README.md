@@ -59,4 +59,4 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 - **[pseudo_node_action](pseudo_node_action):** Bring meタスクにおける，音声，ナビゲーション，ビジョン，マニピュレーションの疑似ノードのサンプルプログラム (Action版)
 - **[pseudo_node_service](pseudo_node_service):** Bring meタスクにおける，音声，ナビゲーション，ビジョン，マニピュレーションの疑似ノードのサンプルプログラム (Service版)
 - **[sample_sm_flexbe](sample_sm_flexbe):** 二状態のステートマシンのサンプルプログラム (FlexBE版)
-- **[sample_sm_smach](sample_sm_smach):** 二状態のステートマシンのサンプルプログラム (FlexBE版)
+- **[sample_sm_smach](sample_sm_smach):** 二状態のステートマシンのサンプルプログラム (Smach版)
