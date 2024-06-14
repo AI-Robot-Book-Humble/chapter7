@@ -7,8 +7,8 @@ Smachによる二状態のステートマシンのプログラム
 ## 実行
 
 - 端末を開いて二状態のステートマシーンを実行します．
-  ```
-  ros2 run sample_sm_smach sample_sm_smach
+  ```console
+  $ ros2 run sample_sm_smach sample_sm_smach
   ```
 
 

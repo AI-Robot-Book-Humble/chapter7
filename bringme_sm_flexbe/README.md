@@ -7,13 +7,13 @@ Bring meタスクのためのFlexBEによるステートマシンのプログラ
 ## 実行
 
 1. Bringmeタスクのための必要なActionServerを実行するために，[bringme_nodes.launch.py](../pseudo_node_action/launch/bringme_nodes.launch.py)というlaunchファイルを実行します．
-  ```
-  ros2 launch pseudo_node_action bringme.launch.py
+  ```console
+  $ ros2 launch pseudo_node_action bringme.launch.py
   ```
 
 2. FlexBE Appを実行します．
-  ```
-  ros2 launch flexbe_app flexbe_full.launch.py
+  ```console
+  $ ros2 launch flexbe_app flexbe_full.launch.py
   ```
 
 > [!NOTE]

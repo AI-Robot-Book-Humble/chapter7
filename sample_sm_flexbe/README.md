@@ -7,8 +7,8 @@ FlexBEによる二状態のステートマシンのプログラム
 ## 実行
 
 1. FlexBE Appを実行します．
-  ```
-  ros2 launch flexbe_app flexbe_full.launch.py
+  ```console
+  $ ros2 launch flexbe_app flexbe_full.launch.py
   ```
 
 > [!NOTE]

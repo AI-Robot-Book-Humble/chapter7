@@ -15,7 +15,7 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 ### `Smach`や`FlexBE`のための環境構築
 
 1. 必要なROS関連のパッケージをインストールします．
-   ```bash
+   ```console
    $ sudo apt-get update
    $ sudo apt-get install -y \
       ros-humble-smach \
@@ -26,27 +26,27 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
    ```
 
 3. 初めて`FlexBE`を利用する場合は、`flexbe_app`をダウンロードします．
-   ```bash
+   ```console
    $ cd ~/airobot_ws/src/
    $ git clone -b humble https://github.com/FlexBE/flexbe_app.git
    ```
 
 4. ダウンロードしたリポジトリをコンパイルします．
-   ```bash
+   ```console
    $ cd ~/airobot_ws
    $ colcon build --symlink-install
-   $ source install/setup.bash
+   $ source install/setup.console
    ```
 
 5. 最後に，FlexBEのGUIのため，必要な依存パッケージをダウンロードします．
-   ```bash
+   ```console
    $ ros2 run flexbe_app nwjs_install
    ```
 
 ### 本リポジトリのセットアップ
 
 1. 本リポジトリをダウンロードします．
-   ```bash
+   ```console
    $ cd ~/airobot_ws/src/
    $ git clone https://github.com/AI-Robot-Book-Humble/chapter7
    ```
@@ -54,35 +54,35 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 > `airobot_interfaces`にあるActionファイルを使用するため，そちらのリポジトリーもcloneしてください．
 
 2. ダウンロードしたリポジトリをコンパイルします．
-   ```bash
+   ```console
    $ cd ~/airobot_ws
    $ colcon build --symlink-install
-   $ source install/setup.bash
+   $ source install/setup.console
    ```
 
 
 ## Behaviorsの作成方法
 
 1. `src`のフォルダーに移動します．
-  ``` bash
+  ``` console
   $ cd ~/airobot_ws/src
   ```
 
 2. Behaviorsのためのパッケージを作成します．
-  ``` bash
+  ``` console
   # 以下の`respository_name`を作成したパッケージの名前に書き換えてください
   $ ros2 run flexbe_widget create_repo respository_name
   ```
 
 3. 作成されたパッケージをコンパイルします．
-  ``` bash
+  ``` console
   $ cd ~/airobot_ws/
   $ colcon build --symlink-install
-  $ source ~/airobot_ws/install/setup.bash
+  $ source ~/airobot_ws/install/setup.console
   ```
 
 4. `FlexBE App`を実行します．
-  ``` bash
+  ``` console
   $ ros2 launch flexbe_app flexbe_full.launch
   ```
 
