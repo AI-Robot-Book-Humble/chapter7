@@ -17,7 +17,7 @@
     <!-- Available Parameters -->
     <params>
 
-        <param type="text" name="init_time" default="10" label="init_time" hint="Sets the init_time" />
+        <param type="text" name="listen_time" default="10" label="listen_time" hint="Sets the listen_time" />
 
     </params>
 

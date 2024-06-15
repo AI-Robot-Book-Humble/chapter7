@@ -60,7 +60,7 @@ class BringmeActionBehaviorSM(Behavior):
         self.name = 'Bringme Action Behavior'
 
         # parameters of this behavior
-        self.add_parameter('init_time', '10')
+        self.add_parameter('listen_time', '10')
 
         # references to used behaviors
         OperatableStateMachine.initialize_ros(node)
@@ -81,37 +81,37 @@ class BringmeActionBehaviorSM(Behavior):
 
     def create(self):
         timeout = 15
-        # x:33 y:367, x:130 y:365
+        # x:946 y:136, x:565 y:360
         _state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
-        _state_machine.userdata.time = self.init_time
+        _state_machine.userdata.time = self.listen_time
 
         # Additional creation code can be added inside the following tags
         # [MANUAL_CREATE]
 
         # [/MANUAL_CREATE]
         with _state_machine:
-            # x:372 y:42
+            # x:113 y:120
             OperatableStateMachine.add('Voice',
                                        VoiceActionState(timeout=timeout, action_topic="ps_voice/command"),
                                        transitions={'done': 'Navigation', 'failed': 'Voice', 'canceled': 'failed', 'timeout': 'failed'},
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off, 'timeout': Autonomy.Off},
                                        remapping={'time': 'time', 'text': 'text', 'target': 'target', 'destination': 'destination'})
 
-            # x:390 y:227
+            # x:307 y:57
             OperatableStateMachine.add('Navigation',
                                        NavigationActionState(timeout=timeout, action_topic="ps_navigation/command"),
                                        transitions={'done': 'Vision', 'failed': 'Navigation', 'canceled': 'failed', 'timeout': 'failed'},
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off, 'timeout': Autonomy.Off},
                                        remapping={'destination': 'destination', 'text': 'text'})
 
-            # x:387 y:373
+            # x:511 y:120
             OperatableStateMachine.add('Vision',
                                        VisionActionState(timeout=timeout, action_topic="ps_vision/command"),
-                                       transitions={'done': 'Manipulation', 'failed': 'Vision', 'canceled': 'failed', 'timeout': 'failed'},
+                                       transitions={'done': 'Manipulation', 'failed': 'Manipulation', 'canceled': 'failed', 'timeout': 'failed'},
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off, 'canceled': Autonomy.Off, 'timeout': Autonomy.Off},
                                        remapping={'target': 'target', 'text': 'text'})
 
-            # x:392 y:529
+            # x:751 y:57
             OperatableStateMachine.add('Manipulation',
                                        ManipulationActionState(timeout=timeout, action_topic="ps_manipulation/command"),
                                        transitions={'done': 'finished', 'failed': 'Vision', 'canceled': 'failed', 'timeout': 'failed'},
