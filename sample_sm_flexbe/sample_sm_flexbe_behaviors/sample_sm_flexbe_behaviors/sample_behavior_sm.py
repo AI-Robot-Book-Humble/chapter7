@@ -50,6 +50,7 @@ class SampleBehaviorSM(Behavior):
     Define Sample Behavior.
 
     FlexBEの基本を理解するためのステートマシンの一例
+
     """
 
     def __init__(self, node):
@@ -57,7 +58,7 @@ class SampleBehaviorSM(Behavior):
         self.name = 'Sample Behavior'
 
         # parameters of this behavior
-        self.add_parameter('init_eat_counter', 0)
+        self.add_parameter('max_eat', 5)
 
         # references to used behaviors
         OperatableStateMachine.initialize_ros(node)
@@ -75,23 +76,24 @@ class SampleBehaviorSM(Behavior):
         # Behavior comments:
 
     def create(self):
-        # x:30 y:365, x:130 y:365
-        _state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
-        _state_machine.userdata.eat_counter = self.init_eat_counter
+        # x:96 y:170
+        _state_machine = OperatableStateMachine(outcomes=['finished'])
+        _state_machine.userdata.max_eat = self.max_eat
+        _state_machine.userdata.eat_counter = 0
 
         # Additional creation code can be added inside the following tags
         # [MANUAL_CREATE]
 
         # [/MANUAL_CREATE]
         with _state_machine:
-            # x:280 y:52
+            # x:337 y:37
             OperatableStateMachine.add('Search',
                                        SearchState(),
                                        transitions={'succeeded': 'Eat', 'finished': 'finished'},
                                        autonomy={'succeeded': Autonomy.Off, 'finished': Autonomy.Off},
-                                       remapping={'eat_counter': 'eat_counter'})
+                                       remapping={'eat_counter': 'eat_counter', 'max_eat': 'max_eat'})
 
-            # x:278 y:241
+            # x:338 y:141
             OperatableStateMachine.add('Eat',
                                        EatState(),
                                        transitions={'succeeded': 'Search'},

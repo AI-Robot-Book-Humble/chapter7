@@ -7,27 +7,81 @@ Bring meタスクのためのFlexBEによるステートマシンのプログラ
 ## 実行
 
 1. Bringmeタスクのための必要なActionServerを実行するために，[bringme_nodes.launch.py](../pseudo_node_action/launch/bringme_nodes.launch.py)というlaunchファイルを実行します．
-  ```
-  ros2 launch pseudo_node_action bringme.launch.py
+  ```console
+  $ ros2 launch pseudo_node_action bringme.launch.py
   ```
 
-2. FlexBE Appを実行します．
-  ```
-  ros2 launch flexbe_app flexbe_full.launch.py
+2. `FlexBE App`を実行します．
+  ```console
+  $ ros2 launch flexbe_app flexbe_full.launch.py
   ```
 
 > [!NOTE]
 > `FlexBe App`が起動されない場合は，`nwjs`がインストールされていない可能性があります．
 その際，`ros2 run flexbe_app nwjs_install`を実行してください．
 
-3. FlexBE Appの上部にある`Load Behavior`を押して，右側に現れるBehavior一覧から`Bringme Action Behavior`を選択してください．
-
-4. その後，FlexBe Appの上部の`Runtime Control`を押し，`Start Execution`でステートマシンを開始させます．
+<!-- 
+2. `FlexBE WebUI`を実行します．
+  ```console
+  $ ros2 launch flexbe_webui flexbe_full.launch.py
 
 > [!NOTE]
-> `init_time`は音声認識の起動時間のことを表します．その値を自由に変えられます．
+> `FlexBe WebUI`が起動されない場合は，依存関係のインストールされていない可能性があります．
+その際，`pip3 install -r ~/airobot_ws/src/flexbe_webui/requires.txt`を実行してください．
+  ``` -->
 
-5. `Behavior Feedback`にステートマシンの結果を確認できます．
+3. `Behavior Dashboard`が表示されます．
+![](../docs/bringme_sm_flexbe/01_behavior_dashboard.png)
+
+4. `Load Behavior`を押し，右側にBehavior一覧が表示されます．
+![](../docs/bringme_sm_flexbe/02_load_behavior.png)
+
+5. その中から，`Bringme Action Behavior`というBehaviorを選択します．
+![](../docs/bringme_sm_flexbe/03_loaded_behavior.png)
+
+6. `Statemachine Editor`に移動して，ステートマシンの状態を確認します．
+![](../docs/bringme_sm_flexbe/04_statemachine_editor.png)
+
+7. `Runtime Control`に移動して，ステートマシンを実行します．
+そのために，まず`listen_time`という値を設定します．
+
+> [!NOTE]
+> `listen_time`は音声認識の起動時間のことを表します．その値を自由に変えられます．
+
+![](../docs/bringme_sm_flexbe/05_runtime_control.png)
+
+7. 次に，`Start Execution`を押して，状態が開始されます．
+
+| Voiceステート | Navigationステート |
+| --- | --- |
+| ![](../docs/bringme_sm_flexbe/06_voice.png) | ![](../docs/bringme_sm_flexbe/07_navigation.png) |
+
+| Visionステート | Manipulationステート |
+| --- | --- |
+| ![](../docs/bringme_sm_flexbe/08_vision.png) | ![](../docs/bringme_sm_flexbe/09_manipulation.png) |
+
+8. 実行ターミナルの結果の一例．
+  ```console
+  [00:37:59] Onboard engine is ready.
+  [00:38:00] --> Mirror - received updated structure with checksum id = 741633216
+  [00:38:00] Activate mirror for behavior id = 741633216 ...
+  [00:38:00] --> Preparing new behavior...
+  [00:38:00] Executing mirror ...
+  [00:38:00] Onboard Behavior Engine starting [Bringme Action Behavior : 741633216]
+  [00:38:11] 音声認識の結果: bring me a cup from the kitchen
+  [00:38:15] ナビゲーションが失敗しました
+  [00:38:18] ナビゲーションが失敗しました
+  [00:38:28] ナビゲーションの結果: reached
+  [00:38:38] 物体認識の結果: found
+  [00:38:39] 物体把持が失敗しました
+  [00:38:49] 物体認識の結果: found
+  [00:38:59] 物体把持の結果: reached
+  [00:38:59] PreemptableStateMachine 'Bringme Action Behavior' spin() - done with outcome=finished
+  [00:39:00] No behavior active.
+  [00:39:00] Onboard engine is ready.
+  [00:39:00] [92m--- Behavior Mirror ready! ---[0m
+  [00:39:10] Onboard engine is ready.
+  ```
 
 
 ## Statesの一覧
@@ -48,45 +102,3 @@ Bring meタスクのためのFlexBEによるステートマシンのプログラ
 
 * [bringme_action_behavior_sm.py](bringme_sm_flexbe_behaviors/bringme_sm_flexbe_behaviors/bringme_action_behavior_sm.py):
   * 音声認識・ナビゲーション・物体認識・物体把持の状態を含めたBringmeタスクのためのステートマシン 
-
-
-## Behaviorsの作成方法
-
-1. `src`のフォルダーに移動します．
-  ``` bash
-  $ cd ~/airobot_ws/src
-  ```
-
-2. Behaviorsのためのパッケージを作成します．
-  ``` bash
-  # 以下の`respository_name`を作成したパッケージの名前に書き換えてください
-  $ ros2 run flexbe_widget create_repo respository_name
-  ```
-
-3. 作成されたパッケージをコンパイルします．
-  ``` bash
-  $ cd ~/airobot_ws/
-  $ colcon build --symlink-install
-  $ source ~/airobot_ws/install/setup.bash
-  ```
-
-4. `FlexBE App`を実行します．
-  ``` bash
-  $ ros2 launch flexbe_app flexbe_full.launch
-  ```
-
-> [!NOTE]
-> `FlexBe App`が起動されない場合は，`nwjs`がインストールされていない可能性があります．
-その際，`ros2 run flexbe_app nwjs_install`を実行してください．
-
-5. `Behavior Dashboard`が表示されます．そこで，`Load Behavior`を押し，右側に表示されるBehavior一覧の中から作成したパッケージの名前を選択します．
-
-6. 必要に応じて，`Behavior Parameters`・`Private Configuration`・`State Machine Userdata`・`State Machine Interface`に変数値を定義します．
-
-7. 次に，`Statemachine Editor`に移動して，`Add State`という機能を利用し，事前に作成した状態を挿入します．その際に，右側に表示されるState一覧から必要な状態を選択し，`Name`に状態の名前を記入します．`Add`を押すと，ステートマシンにその状態が表示されます．
-
-8. 入力された状態に「●」と接続します．また，その状態の可能な出録結果に応じて，次の状態か終了の「◎」と接続させます．
-
-9. ステートマシンの構造が終わりましたら，問題がないかを`Check Behavior`で確認します．Logの結果に応じて，修正してください．
-
-10. 最後に問題がなければ，`Save Behavior`を押し，Behaviorを保存します．

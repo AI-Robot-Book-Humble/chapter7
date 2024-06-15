@@ -46,5 +46,6 @@ class EatState(EventState):
         sleep(1)
         Logger.loginfo('スイーツを1個食べます！') # 食事をしたことをログに残します
         userdata.eat_counter += 1 # eat_counterを更新します
+        Logger.loginfo('現時点では、スイーツを{}個食べました！'.format(userdata.eat_counter)) # 食べたスナックの数をログに残します
 
         return 'succeeded' # 'succeeded'という結果を返します

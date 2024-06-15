@@ -6,23 +6,85 @@ FlexBEによる二状態のステートマシンのプログラム
 
 ## 実行
 
-1. FlexBE Appを実行します．
-  ```
-  ros2 launch flexbe_app flexbe_full.launch.py
+1. `FlexBE App`を実行します．
+  ```console
+  $ ros2 launch flexbe_app flexbe_full.launch.py
   ```
 
 > [!NOTE]
 > `FlexBe App`が起動されない場合は，`nwjs`がインストールされていない可能性があります．
 その際，`ros2 run flexbe_app nwjs_install`を実行してください．
 
-2. FlexBE Appの上部にある`Load Behavior`を押して，右側に現れるBehavior一覧から`Sample Behavior`を選択してください．
-
-3. その後，FlexBe Appの上部の`Runtime Control`を押し，`Start Execution`でステートマシンを開始させます．
+<!-- 
+1. `FlexBE WebUI`を実行します．
+  ```console
+  $ ros2 launch flexbe_webui flexbe_full.launch.py
 
 > [!NOTE]
-> `init_counter`はユーザーが食べたスナックの数のことを表します．その値を自由に変えられます．
+> `FlexBe WebUI`が起動されない場合は，依存関係のインストールされていない可能性があります．
+その際，`pip3 install -r ~/airobot_ws/src/flexbe_webui/requires.txt`を実行してください．
+  ``` -->
 
-5. `Behavior Feedback`にステートマシンの結果を確認できます．
+2. `Behavior Dashboard`が表示されます．
+![](../docs/sample_sm_flexbe/01_behavior_dashboard.png)
+
+3. `Load Behavior`を押し，右側にBehavior一覧が表示されます．
+![](../docs/sample_sm_flexbe/02_load_behavior.png)
+
+4. その中から，`Sample Behavior`というBehaviorを選択します．
+![](../docs/sample_sm_flexbe/03_loaded_behavior.png)
+
+5. `Statemachine Editor`に移動して，ステートマシンの状態を確認します．
+![](../docs/sample_sm_flexbe/04_statemachine_editor.png)
+
+6. `Runtime Control`に移動して，ステートマシンを実行します．
+そのために，まず`max_eat`という値を設定します．
+
+> [!NOTE]
+> `max_eat`はユーザーが食べられるスイーツの数のことを表します．その値を自由に変えられます．
+
+![](../docs/sample_sm_flexbe/05_runtime_control.png)
+
+7. 次に，`Start Execution`を押して，状態が開始されます．
+
+| Searchステート | Eatステート |
+| --- | --- |
+| ![](../docs/sample_sm_flexbe/06_search.png) | ![](../docs/sample_sm_flexbe/07_eat.png) |
+
+8. 実行ターミナルの結果の一例．
+  ```console
+  [00:50:45] Onboard engine is ready.
+  [00:50:50] --> Mirror - received updated structure with checksum id = 551566305
+  [00:50:50] Activate mirror for behavior id = 551566305 ...
+  [00:50:50] --> Preparing new behavior...
+  [00:50:50] Executing mirror ...
+  [00:50:50] Onboard Behavior Engine starting [Sample Behavior : 551566305]
+  [00:50:52] スイーツを探索しています
+  [00:50:52] スイーツを見つけました！
+  [00:50:53] スイーツを1個食べます！
+  [00:50:53] 現時点では、スイーツを1個食べました！
+  [00:50:54] スイーツを探索しています
+  [00:50:54] スイーツを見つけました！
+  [00:50:55] スイーツを1個食べます！
+  [00:50:55] 現時点では、スイーツを2個食べました！
+  [00:50:56] スイーツを探索しています
+  [00:50:56] スイーツを見つけました！
+  [00:50:57] スイーツを1個食べます！
+  [00:50:57] 現時点では、スイーツを3個食べました！
+  [00:50:58] スイーツを探索しています
+  [00:50:58] スイーツを見つけました！
+  [00:50:59] スイーツを1個食べます！
+  [00:50:59] 現時点では、スイーツを4個食べました！
+  [00:51:00] スイーツを探索しています
+  [00:51:00] スイーツを見つけました！
+  [00:51:01] スイーツを1個食べます！
+  [00:51:01] 現時点では、スイーツを5個食べました！
+  [00:51:02] スイーツを探索しています
+  [00:51:02] もうお腹いっぱいです・・・
+  [00:51:02] PreemptableStateMachine 'Sample Behavior' spin() - done with outcome=finished
+  [00:51:02] No behavior active.
+  [00:51:02] [92m--- Behavior Mirror ready! ---[0m
+  ```
 
 
 ## Statesの一覧

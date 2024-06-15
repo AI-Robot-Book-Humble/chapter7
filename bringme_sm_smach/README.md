@@ -7,8 +7,8 @@ Bring meタスクのためのSmachによるステートマシンのプログラ�
 ## 実行
 
 - 端末を開いてステートマシーンを実行します．
-  ```
-  ros2 launch bringme_sm_smach bringme.launch.py
+  ```console
+  $ ros2 launch bringme_sm_smach bringme.launch.py
   ```
 
 ## ヘルプ

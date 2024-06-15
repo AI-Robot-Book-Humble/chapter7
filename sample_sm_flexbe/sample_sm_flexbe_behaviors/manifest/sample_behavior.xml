@@ -8,6 +8,7 @@
     <date>Tue May 28 2024</date>
     <description>
         FlexBEの基本を理解するためのステートマシンの一例
+
     </description>
 
 
@@ -16,8 +17,8 @@
     <!-- Available Parameters -->
     <params>
 
-        <param type="numeric" name="init_eat_counter" default="0" label="init_eat_counter" hint="Sets the init_eat_counter">
-            <min value="0" />
+        <param type="numeric" name="max_eat" default="5" label="max_eat" hint="Sets the max_eat">
+            <min value="1" />
             <max value="10" />
         </param>
 
