@@ -15,73 +15,122 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 ### `Smach`や`FlexBE`のための環境構築
 
 1. 必要なROS関連のパッケージをインストールします．
-   ```console
-   $ sudo apt-get update
-   $ sudo apt-get install -y \
+  ```console
+  $ sudo apt-get update
+  $ sudo apt-get install -y \
       ros-humble-smach \
       ros-humble-executive-smach \
       ros-humble-flexbe-core \
-      ros-humble-flexbe-widget \
-      ros-humle-flexbe-behavior-engine
-   ```
+      ros-humble-flexbe-widget
+  ```
 
-3. 初めて`FlexBE`を利用する場合は、`flexbe_app`をダウンロードします．
-   ```console
-   $ cd ~/airobot_ws/src/
-   $ git clone -b humble https://github.com/FlexBE/flexbe_app.git
-   ```
+3. 初めて`FlexBE`を利用する場合は、`FlexBE Behavior Engine`と`FlexBE App`をダウンロードします．
+  ```console
+  $ cd ~/airobot_ws/src/
+  $ git clone -b 3.0.3 https://github.com/FlexBE/flexbe_behavior_engine
+  $ git clone -b humble https://github.com/FlexBE/flexbe_app.git
+  ```
+
+<!--
+3. 初めて`FlexBE`を利用する場合は、`FlexBE Behavior Engine`と`FlexBE WebUI`をダウンロードします．
+  ```console
+  $ cd ~/airobot_ws/src/
+  $ git clone -b 3.0.3 https://github.com/FlexBE/flexbe_behavior_engine
+  $ git clone -b humble https://github.com/FlexBE/flexbe_webui.git
+  ```
+-->
 
 4. ダウンロードしたリポジトリをコンパイルします．
-   ```console
-   $ cd ~/airobot_ws
-   $ colcon build --symlink-install
-   $ source install/setup.console
-   ```
+  ```console
+  $ cd ~/airobot_ws
+  $ colcon build --symlink-install
+  $ source install/setup.bash
+  ```
 
-5. 最後に，FlexBEのGUIのため，必要な依存パッケージをダウンロードします．
+5. 最後に，`FlexBE App`のため，必要な依存パッケージをダウンロードします．
+  ```console
+  $ ros2 run flexbe_app nwjs_install
+  ```
+
+<!-- 
+5. 最後に，`FlexBE WebUI`のため，必要な依存パッケージをダウンロードします．
    ```console
-   $ ros2 run flexbe_app nwjs_install
+   $ cd ~/airobot_ws/src/flexbe_webui/
+   $ pip3 install -r requires.txt
    ```
+-->
+
 
 ### 本リポジトリのセットアップ
 
 1. 本リポジトリをダウンロードします．
-   ```console
-   $ cd ~/airobot_ws/src/
-   $ git clone https://github.com/AI-Robot-Book-Humble/chapter7
-   ```
+  ```console
+  $ cd ~/airobot_ws/src/
+  $ git clone https://github.com/AI-Robot-Book-Humble/chapter7
+  ```
 > [!IMPORTANT]
 > `airobot_interfaces`にあるActionファイルを使用するため，そちらのリポジトリーもcloneしてください．
 
 2. ダウンロードしたリポジトリをコンパイルします．
-   ```console
-   $ cd ~/airobot_ws
-   $ colcon build --symlink-install
-   $ source install/setup.console
-   ```
+  ```console
+  $ cd ~/airobot_ws
+  $ colcon build --symlink-install
+  $ source install/setup.bash
+  ```
 
 
-## Behaviorsの作成方法
+## ステートマシンの作成方法
 
-1. `src`のフォルダーに移動します．
+1. ワークスペースのPATHを設定します．
+  ``` console
+  $ echo "export WORKSPACE_ROOT=~/airobot_ws" >> ~/.bashrc
+  $ source ~/.bashrc
+  ```
+
+2. ワークスペースにある`src`のフォルダーに移動します．
   ``` console
   $ cd ~/airobot_ws/src
   ```
 
-2. Behaviorsのためのパッケージを作成します．
+3. Behaviorsのためのパッケージを作成します．
   ``` console
-  # 以下の`respository_name`を作成したパッケージの名前に書き換えてください
-  $ ros2 run flexbe_widget create_repo respository_name
+  $ ros2 run flexbe_widget create_repo hello_world
+  ```
+> [!NOTE]
+> `hello_world`という部分を作成したいリポジトリ名に書き換えても構いません．
+
+4. 質問に対して，「**no**」と回答します．
+  ```console
+  Initializing new behaviors repo hello_world_behaviors ...
+
+  (2/5) Fetching project structure...
+  Cloning into 'hello_world_behaviors'...
+  remote: Enumerating objects: 156, done.
+  remote: Counting objects: 100% (156/156), done.
+  remote: Compressing objects: 100% (84/84), done.
+  remote: Total 156 (delta 62), reused 149 (delta 55), pack-reused 0
+  Receiving objects: 100% (156/156), 32.57 KiB | 4.07 MiB/s, done.
+  Resolving deltas: 100% (62/62), done.
+  Set up for ROS 2 development ...
+  Already on 'ros2-devel'
+  Your branch is up to date with 'origin/ros2-devel'.
+
+  (3/5) Configuring project template...
+  mv: 'PROJECT_behaviorshello_world_behaviors' の後に宛先のファイルオペランドがありません
+  詳しくは 'mv --help' を実行して下さい。
+
+  (4/5) Removing the original git repository...
+  (5/5) Do you want to initialize a new Git repository for this project? (yes/no) no
   ```
 
-3. 作成されたパッケージをコンパイルします．
+4. 作成されたパッケージをコンパイルします．
   ``` console
   $ cd ~/airobot_ws/
   $ colcon build --symlink-install
-  $ source ~/airobot_ws/install/setup.console
+  $ source install/setup.bash
   ```
 
-4. `FlexBE App`を実行します．
+5. `FlexBE App`を実行します．
   ``` console
   $ ros2 launch flexbe_app flexbe_full.launch
   ```
@@ -90,17 +139,55 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 > `FlexBe App`が起動されない場合は，`nwjs`がインストールされていない可能性があります．
 その際，`ros2 run flexbe_app nwjs_install`を実行してください．
 
-5. `Behavior Dashboard`が表示されます．そこで，`Load Behavior`を押し，右側に表示されるBehavior一覧の中から作成したパッケージの名前を選択します．
+<!-- 
+5. `FlexBE WebUI`を実行します．
+  ```console
+  $ ros2 launch flexbe_webui flexbe_full.launch.py
 
-6. 必要に応じて，`Behavior Parameters`・`Private Configuration`・`State Machine Userdata`・`State Machine Interface`に変数値を定義します．
+> [!NOTE]
+> `FlexBe WebUI`が起動されない場合は，依存関係のインストールされていない可能性があります．
+その際，`pip3 install -r ~/airobot_ws/src/flexbe_webui/requires.txt`を実行してください．
+  ``` -->
 
-7. 次に，`Statemachine Editor`に移動して，`Add State`という機能を利用し，事前に作成した状態を挿入します．その際に，右側に表示されるState一覧から必要な状態を選択し，`Name`に状態の名前を記入します．`Add`を押すと，ステートマシンにその状態が表示されます．
+6. `Behavior Dashboard`が表示されます．
+![](docs/hello_world/01_behavior_dashboard.png)
 
-8. 入力された状態に「●」と接続します．また，その状態の可能な出録結果に応じて，次の状態か終了の「◎」と接続させます．
+7. `Load Behavior`を押し，右側にBehavior一覧が表示されます．
+![](docs/hello_world/02_load_behavior.png)
 
-9. ステートマシンの構造が終わりましたら，問題がないかを`Check Behavior`で確認します．Logの結果に応じて，修正してください．
+8. その中から，`Example Behavior`というBehaviorを選択します．
+![](docs/hello_world/03_loaded_behavior.png)
 
-10. 最後に問題がなければ，`Save Behavior`を押し，Behaviorを保存します．
+9. `Statemachine Editor`に移動して，ステートマシンの状態を確認します．
+![](docs/hello_world/04_statemachine_editor.png)
+
+10. `Runtime Control`に移動して，ステートマシンを実行します．
+そのために，まず`Waiting Time`という待機時間を表す初期値を設定します．
+![](docs/hello_world/05_runtime_control.png)
+
+11. 次に，`Start Execution`を押して，状態が開始されます．
+
+| Printステート | Waitステート |
+| --- | --- |
+| ![](docs/hello_world/06_runtime_control_running_1.png) | ![](docs/hello_world/07_runtime_control_running_2.png) |
+
+> [!NOTE]
+> `Printステート`から`Waitステート`へ進行させるために，`Autonomy`を`Low`から`Full`に変更してください．
+
+12. 実行ターミナルの結果の一例．
+  ```console
+  [00:28:31] Onboard engine is ready.
+  [00:28:35] --> Mirror - received updated structure with checksum id = 10094639919
+  [00:28:35] Activate mirror for behavior id = 10094639919 ...
+  [00:28:35] Executing mirror ...
+  [00:28:35] --> Preparing new behavior...
+  [00:28:35] Onboard Behavior Engine starting [Example Behavior : 10094639919]
+  [00:28:35] Hello World!
+  [00:28:39] PreemptableStateMachine 'Example Behavior' spin() - done with outcome=finished
+  [00:28:39] No behavior active.
+  [00:28:39] [92m--- Behavior Mirror ready! ---[00m
+  [00:28:39] Onboard engine is ready.
+  ```
 
 
 ## ディレクトリ構成
