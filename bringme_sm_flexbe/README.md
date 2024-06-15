@@ -25,7 +25,7 @@ Bring meタスクのためのFlexBEによるステートマシンのプログラ
 4. その後，FlexBe Appの上部の`Runtime Control`を押し，`Start Execution`でステートマシンを開始させます．
 
 > [!NOTE]
-> `init_time`は音声認識の起動時間のことを表します．その値を自由に変えられます．
+> `listen_time`は音声認識の起動時間のことを表します．その値を自由に変えられます．
 
 5. `Behavior Feedback`にステートマシンの結果を確認できます．
 
