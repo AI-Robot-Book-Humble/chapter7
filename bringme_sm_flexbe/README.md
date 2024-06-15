@@ -62,25 +62,25 @@ Bring meタスクのためのFlexBEによるステートマシンのプログラ
 
 8. 実行ターミナルの結果の一例．
   ```console
-  [0:37:59] Onboard engine is ready.
-  [0:38:00] --> Mirror - received updated structure with checksum id = 741633216
-  [0:38:00] Activate mirror for behavior id = 741633216 ...
-  [0:38:00] --> Preparing new behavior...
-  [0:38:00] Executing mirror ...
-  [0:38:00] Onboard Behavior Engine starting [Bringme Action Behavior : 741633216]
-  [0:38:11] 音声認識の結果: bring me a cup from the kitchen
-  [0:38:15] ナビゲーションが失敗しました
-  [0:38:18] ナビゲーションが失敗しました
-  [0:38:28] ナビゲーションの結果: reached
-  [0:38:38] 物体認識の結果: found
-  [0:38:39] 物体把持が失敗しました
-  [0:38:49] 物体認識の結果: found
-  [0:38:59] 物体把持の結果: reached
-  [0:38:59] PreemptableStateMachine 'Bringme Action Behavior' spin() - done with outcome=finished
-  [0:39:00] No behavior active.
-  [0:39:00] Onboard engine is ready.
-  [0:39:00] [92m--- Behavior Mirror ready! ---[0m
-  [0:39:10] Onboard engine is ready.
+  [00:37:59] Onboard engine is ready.
+  [00:38:00] --> Mirror - received updated structure with checksum id = 741633216
+  [00:38:00] Activate mirror for behavior id = 741633216 ...
+  [00:38:00] --> Preparing new behavior...
+  [00:38:00] Executing mirror ...
+  [00:38:00] Onboard Behavior Engine starting [Bringme Action Behavior : 741633216]
+  [00:38:11] 音声認識の結果: bring me a cup from the kitchen
+  [00:38:15] ナビゲーションが失敗しました
+  [00:38:18] ナビゲーションが失敗しました
+  [00:38:28] ナビゲーションの結果: reached
+  [00:38:38] 物体認識の結果: found
+  [00:38:39] 物体把持が失敗しました
+  [00:38:49] 物体認識の結果: found
+  [00:38:59] 物体把持の結果: reached
+  [00:38:59] PreemptableStateMachine 'Bringme Action Behavior' spin() - done with outcome=finished
+  [00:39:00] No behavior active.
+  [00:39:00] Onboard engine is ready.
+  [00:39:00] [92m--- Behavior Mirror ready! ---[0m
+  [00:39:10] Onboard engine is ready.
   ```
 
 
