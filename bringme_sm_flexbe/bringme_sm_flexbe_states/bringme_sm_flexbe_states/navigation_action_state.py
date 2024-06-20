@@ -61,14 +61,14 @@ class NavigationActionState(EventState):
         self._timeout_sec = timeout
         self._topic = action_topic
 
-        # FlexBEのProxyActionClientを用いてActionのClient側を作成します
-        ProxyActionClient.initialize(NavigationActionState._node)
-        self._client = ProxyActionClient({self._topic: StringCommand},
-                                         wait_duration=0.0)  # pass required clients as dict (topic: type)
-
         self._error      = False # ActionのClientからGoalの送信を失敗した場合
         self._return     = None  # オペレーターによる結果の出力を拒む場合，戻り値を保存します
         self._start_time = None  # 開始時間を初期化します
+
+        # FlexBEのProxyActionClientを用いてActionのClient側を作成します
+        ProxyActionClient.initialize(NavigationActionState._node)
+        self._client = ProxyActionClient({self._topic: StringCommand},
+                                         wait_duration=0.0)
 
     def execute(self, userdata):
         '''
@@ -117,12 +117,12 @@ class NavigationActionState(EventState):
             Logger.logwarn("NavigationActionState を実行するには， userdata.destination が必要です！")
             return
 
-        # 開始時間を記録します
-        self._start_time = self._node.get_clock().now()
-
         if not isinstance(userdata.destination, (str)):
             self._error = True
             Logger.logwarn('入力された型は %s です．string型が求められています', type(userdata.destination).__name__)
+
+        # 開始時間を記録します
+        self._start_time = self._node.get_clock().now()
 
         # GoalをActionのServerに送信します
         goal = StringCommand.Goal()

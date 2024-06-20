@@ -60,14 +60,14 @@ class ManipulationActionState(EventState):
         self._timeout_sec = timeout
         self._topic = action_topic
 
+        self._error      = False # ActionのClientからGoalの送信を失敗した場合
+        self._return     = None  # オペレーターによる結果の出力を拒む場合，戻り値を保存します
+        self._start_time = None  # 開始時間を初期化します
+
         # FlexBEのProxyActionClientを用いてActionのClient側を作成します
         ProxyActionClient.initialize(ManipulationActionState._node)
         self._client = ProxyActionClient({self._topic: StringCommand},
                                          wait_duration=0.0)
-
-        self._error      = False # ActionのClientからGoalの送信を失敗した場合
-        self._return     = None  # オペレーターによる結果の出力を拒む場合，戻り値を保存します
-        self._start_time = None  # 開始時間を初期化します
 
     def execute(self, userdata):
         '''
@@ -116,13 +116,13 @@ class ManipulationActionState(EventState):
             Logger.logwarn("ManipulationActionState を実行するには， userdata.target が必要です!")
             return
 
-        # 開始時間を記録します
-        self._start_time = self._node.get_clock().now()
-
         # 入力された値はstring型か確認します
         if not isinstance(userdata.target, (str)):
             self._error = True
             Logger.logwarn('入力された型は %s です．string型が求められています', type(userdata.target).__name__)
+
+        # 開始時間を記録します
+        self._start_time = self._node.get_clock().now()
 
         # GoalをActionのServerに送信します
         goal = StringCommand.Goal()
