@@ -29,6 +29,7 @@ setup(
         'console_scripts': [
             'eat_state = sample_sm_flexbe_states.eat_state',
             'search_state = sample_sm_flexbe_states.search_state',
+            'grasp_state = sample_sm_flexbe_states.grasp_state',
         ],
     },
 )
