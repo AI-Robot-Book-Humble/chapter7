@@ -25,8 +25,7 @@ from time import sleep
 
 class GraspState(EventState):
     """
-    GraspStateという状態はスイーツを探すことを目標としています．
-    ユーザーがこれまでどれぐらい食べたかによって，食べるか食べないかを判定します．
+    GraspStateという状態はスイーツを把持することを目標としています．
 
     出力
     <= succeeded       スイーツが見つけたら，検出成功するという結果を出力します
