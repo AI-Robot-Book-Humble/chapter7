@@ -55,5 +55,3 @@ class SearchState(EventState):
             Logger.loginfo('もうお腹いっぱいです・・・') # 探索の状態へ訪れた回数が3回になった場合
 
             return 'finished' # 'finished'という結果を返します
-
-        return None  # ステートが終わっていなければ，Noneを戻します
