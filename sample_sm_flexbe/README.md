@@ -6,24 +6,14 @@ FlexBEによる二状態のステートマシンのプログラム
 
 ## 実行
 
-1. `FlexBE App`を実行します．
-  ```console
-  $ ros2 launch flexbe_app flexbe_full.launch.py
-  ```
-
-> [!NOTE]
-> `FlexBe App`が起動されない場合は，`nwjs`がインストールされていない可能性があります．
-その際，`ros2 run flexbe_app nwjs_install`を実行してください．
-
-<!-- 
 1. `FlexBE WebUI`を実行します．
   ```console
   $ ros2 launch flexbe_webui flexbe_full.launch.py
+  ```
 
 > [!NOTE]
 > `FlexBe WebUI`が起動されない場合は，依存関係のインストールされていない可能性があります．
-その際，`pip3 install -r ~/airobot_ws/src/flexbe_webui/requires.txt`を実行してください．
-  ``` -->
+その際，`flexbe_webui`のフォルダーの中で，`pip3 install -r requires.txt`を実行してください．
 
 2. `Behavior Dashboard`が表示されます．
 ![](../docs/sample_sm_flexbe/01_behavior_dashboard.png)
