@@ -19,46 +19,30 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
   $ sudo apt-get update
   $ sudo apt-get install -y \
       ros-humble-smach \
-      ros-humble-executive-smach \
-      ros-humble-flexbe-core \
-      ros-humble-flexbe-widget
+      ros-humble-executive-smach
   ```
 
-3. 初めて`FlexBE`を利用する場合は、`FlexBE Behavior Engine`と`FlexBE App`をダウンロードします．
-  ```console
-  $ cd ~/airobot_ws/src/
-  $ git clone -b 3.0.3 https://github.com/FlexBE/flexbe_behavior_engine
-  $ git clone -b humble https://github.com/FlexBE/flexbe_app.git
-  ```
-
-<!--
 3. 初めて`FlexBE`を利用する場合は、`FlexBE Behavior Engine`と`FlexBE WebUI`をダウンロードします．
   ```console
   $ cd ~/airobot_ws/src/
-  $ git clone -b 3.0.3 https://github.com/FlexBE/flexbe_behavior_engine
-  $ git clone -b humble https://github.com/FlexBE/flexbe_webui.git
+  $ git clone -b 4.0.0 https://github.com/FlexBE/flexbe_behavior_engine.git
+  $ git clone -b 4.0.0 https://github.com/FlexBE/flexbe_webui.git
   ```
--->
 
 4. ダウンロードしたリポジトリをコンパイルします．
   ```console
   $ cd ~/airobot_ws
-  $ colcon build --symlink-install
+  $ rosdep update
+  $ rosdep install --from-paths src --ignore-src
+  $ colcon build
   $ source install/setup.bash
   ```
 
-5. 最後に，`FlexBE App`のため，必要な依存パッケージをダウンロードします．
-  ```console
-  $ ros2 run flexbe_app nwjs_install
-  ```
-
-<!-- 
-5. 最後に，`FlexBE WebUI`のため，必要な依存パッケージをダウンロードします．
+5. 最後に，`rosdep install`より`FlexBE WebUI`のための依存パッケージがインストールされなかった場合，以下のコマンドでダウンロードします．
    ```console
    $ cd ~/airobot_ws/src/flexbe_webui/
    $ pip3 install -r requires.txt
    ```
--->
 
 
 ### 本リポジトリのセットアップ
@@ -130,24 +114,14 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
   $ source install/setup.bash
   ```
 
-5. `FlexBE App`を実行します．
+5. `FlexBE WebUI`を実行します．
   ``` console
-  $ ros2 launch flexbe_app flexbe_full.launch
+  $ ros2 launch flexbe_webui flexbe_full.launch
   ```
 
 > [!NOTE]
-> `FlexBe App`が起動されない場合は，`nwjs`がインストールされていない可能性があります．
-その際，`ros2 run flexbe_app nwjs_install`を実行してください．
-
-<!-- 
-5. `FlexBE WebUI`を実行します．
-  ```console
-  $ ros2 launch flexbe_webui flexbe_full.launch.py
-
-> [!NOTE]
-> `FlexBe WebUI`が起動されない場合は，依存関係のインストールされていない可能性があります．
-その際，`pip3 install -r ~/airobot_ws/src/flexbe_webui/requires.txt`を実行してください．
-  ``` -->
+> `FlexBe WebUI`が起動されない場合は，依存パッケージがインストールされていない可能性があります．
+その際，`flexbe_webui`のフォルダーの中で，`pip3 install -r requires.txt`を実行してください．
 
 6. `Behavior Dashboard`が表示されます．
 ![](docs/hello_world/01_behavior_dashboard.png)
