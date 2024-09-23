@@ -26,12 +26,12 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
   ```console
   $ cd ~/airobot_ws/src/
   $ git clone -b 4.0.0 https://github.com/FlexBE/flexbe_behavior_engine.git
-  $ git clone -b 4.0.0 https://github.com/FlexBE/flexbe_webui.git
+  $ git clone https://github.com/AI-Robot-Book-Humble/flexbe_webui.git
   ```
 
 4. ダウンロードしたリポジトリをコンパイルします．
   ```console
-  $ cd ~/airobot_ws
+  $ cd ~/airobot_ws/
   $ rosdep update
   $ rosdep install --from-paths src --ignore-src
   $ colcon build
@@ -50,15 +50,15 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 1. 本リポジトリをダウンロードします．
   ```console
   $ cd ~/airobot_ws/src/
-  $ git clone https://github.com/AI-Robot-Book-Humble/chapter7
+  $ git clone https://github.com/AI-Robot-Book-Humble/chapter7.git
   ```
 > [!IMPORTANT]
-> `airobot_interfaces`にあるActionファイルを使用するため，そちらのリポジトリーもcloneしてください．
+> [airobot_interfaces](https://github.com/AI-Robot-Book-Humble/airobot_demo)にあるActionファイルを使用するため，そちらのリポジトリーもcloneしてください．
 
 2. ダウンロードしたリポジトリをコンパイルします．
   ```console
-  $ cd ~/airobot_ws
-  $ colcon build --symlink-install
+  $ cd ~/airobot_ws/
+  $ colcon build
   $ source install/setup.bash
   ```
 
@@ -73,7 +73,7 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 
 2. ワークスペースにある`src`のフォルダーに移動します．
   ``` console
-  $ cd ~/airobot_ws/src
+  $ cd ~/airobot_ws/src/
   ```
 
 3. Behaviorsのためのパッケージを作成します．
@@ -110,13 +110,13 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 4. 作成されたパッケージをコンパイルします．
   ``` console
   $ cd ~/airobot_ws/
-  $ colcon build --symlink-install
+  $ colcon build
   $ source install/setup.bash
   ```
 
 5. `FlexBE WebUI`を実行します．
   ``` console
-  $ ros2 launch flexbe_webui flexbe_full.launch
+  $ ros2 launch flexbe_webui flexbe_full.launch.py
   ```
 
 > [!NOTE]
