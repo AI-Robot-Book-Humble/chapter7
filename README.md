@@ -17,9 +17,7 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
 1. 必要なROS関連のパッケージをインストールします．
   ```console
   $ sudo apt-get update
-  $ sudo apt-get install -y \
-      ros-humble-smach \
-      ros-humble-executive-smach
+  $ sudo apt-get install -y ros-humble-smach ros-humble-executive-smach
   ```
 
 3. 初めて`FlexBE`を利用する場合は、`FlexBE Behavior Engine`と`FlexBE WebUI`をダウンロードします．
