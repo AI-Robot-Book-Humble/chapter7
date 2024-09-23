@@ -51,7 +51,7 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
   $ git clone https://github.com/AI-Robot-Book-Humble/chapter7.git
   ```
 > [!IMPORTANT]
-> [airobot_interfaces](https://github.com/AI-Robot-Book-Humble/airobot_demo)にあるActionファイルを使用するため，そちらのリポジトリーもcloneしてください．
+> [chapter2](https://github.com/AI-Robot-Book-Humble/chapter2)の[airobot_interfaces](https://github.com/AI-Robot-Book-Humble/chapter2/tree/master/airobot_interfaces)にあるActionファイルを使用するため，もしまだインストールされていなければ，そちらのリポジトリーもcloneしてください．
 
 2. ダウンロードしたリポジトリをコンパイルします．
   ```console
