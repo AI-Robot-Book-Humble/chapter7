@@ -83,7 +83,10 @@ FlexBEによる二状態のステートマシンのプログラム
   * スナックを探す状態の実装
 
 * [eat_state.py](sample_sm_flexbe_states/sample_sm_flexbe_states/eat_state.py):
-  * 見つけたスナックを食べる状態の実装 
+  * 見つけたスナックを食べる状態の実装
+
+* [grasp_state.py](sample_sm_flexbe_states/sample_sm_flexbe_states/grasp_state.py):
+  * 見つけたスナックを把持する状態の実装（発展版）
 
 
 ## Behaviorsの一覧
