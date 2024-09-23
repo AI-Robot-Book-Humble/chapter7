@@ -7,17 +7,17 @@ find_package(rclpy REQUIRED)
 
 install(DIRECTORY
   manifest
-  DESTINATION local/lib/python3.10/dist-packages/${PROJECT_NAME}
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY
   config
-  DESTINATION local/lib/python3.10/dist-packages/${PROJECT_NAME}
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 install(PROGRAMS
   bin/copy_behavior
-  DESTINATION local/lib/python3.10/dist-packages/${PROJECT_NAME}
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 # Install Python modules
