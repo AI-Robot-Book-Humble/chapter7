@@ -36,11 +36,11 @@ ROS2とPythonで作って学ぶAIロボット入門（出村・萩原・升谷�
   $ source install/setup.bash
   ```
 
-5. 最後に，`rosdep install`より`FlexBE WebUI`のための依存パッケージがインストールされなかった場合，以下のコマンドでダウンロードします．
-   ```console
+5. 最後に，FlexBE WebUIの依存パッケージを以下のコマンドでインストールします．
+  ```console
    $ cd ~/airobot_ws/src/flexbe_webui/
    $ pip3 install -r requires.txt
-   ```
+  ```
 
 
 ### 本リポジトリのセットアップ
