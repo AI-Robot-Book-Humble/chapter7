@@ -130,7 +130,7 @@ class VoiceActionState(EventState):
         # 開始時間を記録します
         self._start_time = self._node.get_clock().now()
 
-        # Send the goal.
+        # GoalをActionのServerに送信します
         goal = StringCommand.Goal()
         goal.command = str(userdata.time)
 
